@@ -10,6 +10,12 @@ namespace bigbyte
     {
         //Variablen
 
+        //Constructor: Check Internet Connection
+        GitHubHandler() 
+        {
+            bool internetAvailable = Network.GetInternetConnectionAvailable();
+        }
+
         //GitHub pull Repo
 
         //GitHub pull single
