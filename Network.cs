@@ -1,10 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+    bitbyte serves as a package manager.
+    It serves as a management tool for downloading, installing, updating, upgrading, removing and running various software aplications from the command line.
+
+    Copyright (C) 2024  Carl Öttinger (Carl Oettinger)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+    You can contact me in the following ways:
+        EMail: oettinger.carl@web.de, big-programming@web.de
+ */
+
+
 using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
 
 
 namespace bigbyte
@@ -21,9 +39,22 @@ namespace bigbyte
                     return reply.Status == IPStatus.Success;
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return false;
+                Console.Error.WriteLine(e);
+                try
+                {
+                    using (Ping ping = new Ping())
+                    {
+                        PingReply reply = ping.Send(urlToTry, 3000);
+                        return reply.Status == IPStatus.Success;
+                    }
+                }
+                catch (Exception e2)
+                {
+                    Console.Error.WriteLine(e2);
+                    return false;
+                }
             }
 
         }

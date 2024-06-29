@@ -1,10 +1,6 @@
 ﻿/*
-    !!!This program will install DB-Matcher on your system by building it from source files!!!
-
-    The DB-Matcher is an easy-to-use console application written in C# and based on the .NET framework. 
-    The DB-Matcher can merge two databases in Excel format (*.xlsx, *.xls). 
-    It follows the following algorithms in order of importance: Levenshtein distance, Hamming distance, Jaccard index. 
-    The DB-Matcher takes you by the hand at all times and guides you through the data matching process    
+    bitbyte serves as a package manager.
+    It serves as a management tool for downloading, installing, updating, upgrading, removing and running various software aplications from the command line.
 
     Copyright (C) 2024  Carl Öttinger (Carl Oettinger)
 
@@ -45,6 +41,9 @@ namespace bigbyte
         static void Main(string[] args)
         {
             Console.WriteLine(VarHold.currentMainPath);
+
+            GitHubHandler gitHub = new GitHubHandler();
+
             Console.Read();
         }
     }
