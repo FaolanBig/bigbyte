@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bigbyte
 {
-    public static class VarHold
+    internal static class VarHold
     {
         public static string CurrentMainPath {  get { return currentMainPath; } }
         private static string currentMainPath = AppContext.BaseDirectory;
@@ -15,7 +15,13 @@ namespace bigbyte
         private static string contentPath = currentMainPath += "";
         public static string LogFileNameInfo { get { return logFileNameInfo; } }
         private static string logFileNameInfo = "logfile.txt";
-        public static string LogFileNameError { get{ return logFileNameError; } }
+        public static string LogFileNameError { get { return logFileNameError; } }
         private static string logFileNameError = logFileNameInfo;
+        public static bool ForceDeletion { get { return forceDeletion; } set { forceDeletion = value; } }
+        private static bool forceDeletion = false;
+        public static string ActiveArgument { get { return activeArgument; } set { activeArgument = value; } }
+        private static string activeArgument = "";
+        public static string ActiveArgumentContent { get { return activeArgumentContent; } set { activeArgumentContent = value; } }
+        private static string activeArgumentContent = "";
     }
 }

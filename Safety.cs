@@ -2,7 +2,7 @@
 
 namespace bigbyte
 {
-    public static class ToLog
+    internal static class ToLog
     {
         public static void Inf(string toLog)
         {

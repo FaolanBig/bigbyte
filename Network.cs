@@ -3,7 +3,7 @@
 
 namespace bigbyte
 {
-    public static class Network
+    internal static class Network
     {
         public static bool GetInternetConnectionAvailable(string ipv4ToTry = "8.8.8.8", string urlToTry = "https://www.google.com")
         {
@@ -38,5 +38,26 @@ namespace bigbyte
         {
             
         }*/
+        internal static async Task<bool> CheckInternetConnection(string urlToTry = "https://www.github.com")
+        {
+            int timeout = 3;
+            ToLog.Inf($"checking internet connection to {urlToTry} with timeout: {timeout}s");
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(timeout);
+                    HttpResponseMessage response = await client.GetAsync(urlToTry);
+                    ToLog.Inf("connection established successfully");
+                    return response.IsSuccessStatusCode;
+                }
+            }
+            catch
+            {
+                ToLog.Err("connection failed");
+                return false;
+            }
+        }
     }
 }
