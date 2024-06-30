@@ -14,7 +14,7 @@ namespace bigbyte
         public static string ContentPath { get { return contentPath; } }
         private static string contentPath = currentMainPath += "";
         public static string LogFileNameInfo { get { return logFileNameInfo; } }
-        private static string logFileNameInfo = "logfile";
+        private static string logFileNameInfo = "logfile.txt";
         public static string LogFileNameError { get{ return logFileNameError; } }
         private static string logFileNameError = logFileNameInfo;
     }
