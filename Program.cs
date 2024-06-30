@@ -36,7 +36,7 @@ namespace bigbyte
             if (!string.IsNullOrEmpty(argumentsOutputHold)) ToLog.Inf($"program (bigbyte) started with arguments: {argumentsOutputHold}");
             else { ToLog.Inf("program (bigbyte) started without arguments"); }
 
-            GitHubHandler gitHub = new GitHubHandler();
+            GitHubHandler gitHub = new();
         }
     }
 }
