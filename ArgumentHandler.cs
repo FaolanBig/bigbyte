@@ -36,7 +36,7 @@ namespace bigbyte
 
             List<KeyValuePair<string, string>> switchPairs = [];
 
-            List<string> acceptedArguments = new List<string>()
+            /*List<string> acceptedArguments = new List<string>()
             {
                 "help",
                 "install",
@@ -47,15 +47,37 @@ namespace bigbyte
                 "full-upgrade",
                 "run",
                 "verify"
+            };*/
+
+            Dictionary<string, Action> acceptedArguments = new Dictionary<string, Action>
+            {
+                { "help", () => Console.WriteLine("help") },
+                { "install", () => Console.WriteLine("install") },
+                { "remove", () => Console.WriteLine("remove") },
+                { "force-remove", () => Console.WriteLine("force-remove") },
+                { "update", () => Console.WriteLine("update") },
+                { "upgrade", () => Console.WriteLine("upgrade") },
+                { "full-upgrade", () => Console.WriteLine("full-upgrade") },
+                { "run", () => Console.WriteLine("run") },
+                { "verify", () => Console.WriteLine("verify") },
             };
 
-            for (int i = 0; i < args.Length; i++)
+            if (!acceptedArguments.ContainsKey(args[0]))
+            {
+                ToLog.Err($"bad argument: {args[0]} | try help to see accepted arguments");
+            }
+            else
+            {
+                acceptedArguments[args[0]].Invoke();
+            }
+
+            /*for (int i = 0; i < args.Length; i++)
             {
                 string argHold = args[i];
 
 
 
-                /*if (argHold.StartsWith("-"))
+                if (argHold.StartsWith("-"))
                 {
                     argHold.Replace("-", "");
 
@@ -70,8 +92,8 @@ namespace bigbyte
 
                         }
                     }
-                }*/
-            }
+                }
+            }*/
         }
     }
 }
