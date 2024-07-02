@@ -96,14 +96,41 @@ namespace bigbyte
             }*/
         }
 
-        private static void argumentHelp(string[] args) { }
-        private static void argumentInstall(string[] args) { }
-        private static void argumentRemove(string[] args) { }
-        private static void argumentForceRemove(string[] args) { }
-        private static void argumentUpdate(string[] args) { }
-        private static void argumentUpgrade(string[] args) { }
-        private static void argumentFullUpgrade(string[] args) { }
-        private static void argumentRun(string[] args) { }
-        private static void argumentVerify(string[] args) { }
+        private static void argumentHelp(string[] args) 
+        {
+            ToLog.Inf("running: help");
+        }
+        private static void argumentInstall(string[] args) 
+        { 
+            ToLog.Inf("running: install");
+        }
+        private static void argumentRemove(string[] args) 
+        {
+            ToLog.Inf("running: remove");
+        }
+        private static void argumentForceRemove(string[] args) 
+        {
+            ToLog.Inf("running: force-remove");
+        }
+        private static void argumentUpdate(string[] args) 
+        {
+            ToLog.Inf("running: update");
+        }
+        private static void argumentUpgrade(string[] args) 
+        {
+            ToLog.Inf("running: upgrade");
+        }
+        private static void argumentFullUpgrade(string[] args) 
+        {
+            ToLog.Inf("running: full-upgrade");
+        }
+        private static void argumentRun(string[] args) 
+        {
+            ToLog.Inf("running: run");
+        }
+        private static void argumentVerify(string[] args) 
+        {
+            ToLog.Inf("running: verify");
+        }
     }
 }
