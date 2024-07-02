@@ -51,15 +51,15 @@ namespace bigbyte
 
             Dictionary<string, Action> acceptedArguments = new Dictionary<string, Action>
             {
-                { "help", () => Console.WriteLine("help") },
-                { "install", () => Console.WriteLine("install") },
-                { "remove", () => Console.WriteLine("remove") },
-                { "force-remove", () => Console.WriteLine("force-remove") },
-                { "update", () => Console.WriteLine("update") },
-                { "upgrade", () => Console.WriteLine("upgrade") },
-                { "full-upgrade", () => Console.WriteLine("full-upgrade") },
-                { "run", () => Console.WriteLine("run") },
-                { "verify", () => Console.WriteLine("verify") },
+                { "help", () => argumentHelp(args) },
+                { "install", () => argumentInstall(args) },
+                { "remove", () => argumentRemove(args) },
+                { "force-remove", () => argumentForceRemove(args) },
+                { "update", () => argumentUpdate(args) },
+                { "upgrade", () => argumentUpgrade(args) },
+                { "full-upgrade", () => argumentFullUpgrade(args) },
+                { "run", () => argumentRun(args) },
+                { "verify", () => argumentVerify(args) },
             };
 
             if (!acceptedArguments.ContainsKey(args[0]))
@@ -95,5 +95,15 @@ namespace bigbyte
                 }
             }*/
         }
+
+        private static void argumentHelp(string[] args) { }
+        private static void argumentInstall(string[] args) { }
+        private static void argumentRemove(string[] args) { }
+        private static void argumentForceRemove(string[] args) { }
+        private static void argumentUpdate(string[] args) { }
+        private static void argumentUpgrade(string[] args) { }
+        private static void argumentFullUpgrade(string[] args) { }
+        private static void argumentRun(string[] args) { }
+        private static void argumentVerify(string[] args) { }
     }
 }

@@ -33,14 +33,17 @@ namespace bigbyte
             {
                 argumentsOutputHold += arg + " ";
             }
-            if (!string.IsNullOrEmpty(argumentsOutputHold)) ToLog.Inf($"program (bigbyte) started with arguments: {argumentsOutputHold}");
-            else 
-            { 
-                ToLog.Inf("program (bigbyte) started without arguments showing help");
-                args[0] = "help";
+            if (!string.IsNullOrEmpty(argumentsOutputHold))
+            {
+                ToLog.Inf($"program (bigbyte) started with arguments: {argumentsOutputHold}");
+                ArgumentHandler.analyzer(args);
             }
-
-            ArgumentHandler.analyzer(args);
+            else
+            {
+                ToLog.Inf("program (bigbyte) started without arguments showing help");
+                string[] argsTempToHelp = { "help" };
+                ArgumentHandler.analyzer(argsTempToHelp);
+            }
         }
     }
 }
