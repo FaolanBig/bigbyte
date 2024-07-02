@@ -3,7 +3,7 @@
 
 namespace bigbyte
 {
-    internal static class Network
+    internal static class NetworkAgent
     {
         public static bool GetInternetConnectionAvailable(string ipv4ToTry = "8.8.8.8", string urlToTry = "https://www.google.com")
         {

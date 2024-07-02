@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace bigbyte
 {
-    public static class Network
+    public static class NetworkManager
     {
         public static bool GetInternetConnectionAvailable(string ipv4ToTry = "8.8.8.8", string urlToTry = "https://www.google.com")
         {

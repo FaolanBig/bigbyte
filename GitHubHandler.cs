@@ -9,7 +9,7 @@ namespace bigbyte
         //Constructor: Check Internet Connection
         public GitHubHandler() 
         {
-            bool internetAvailable = Network.CheckInternetConnection().Result;
+            bool internetAvailable = NetworkAgent.CheckInternetConnection().Result;
         }
 
         //GitHub pull Repo
