@@ -57,7 +57,20 @@ namespace bigbyte
     }
     internal static class Exit
     {
-        internal static void success() { Environment.Exit(0); }
-        internal static void errored(int exitCode = 1) { Environment.Exit(exitCode); }
+        internal static void success() 
+        {
+            ToLog.Inf($"exiting bigbyte with exit code 0 - see {VarHold.WikiURL_ExitCodes} for more information on exit codes");
+            Environment.Exit(0); 
+        }
+        internal static void errored(int exitCode = 1) 
+        {
+            ToLog.Inf($"exiting bigbyte with exit code {exitCode} - see {VarHold.WikiURL_ExitCodes} for more information on exit codes");
+            Environment.Exit(exitCode); 
+        }
+        internal static void auto() 
+        {
+            ToLog.Inf($"exiting bigbyte with exit code {VarHold.GlobalErrorLevel} - see {VarHold.WikiURL_ExitCodes} for more information on exit codes");
+            Environment.Exit(VarHold.GlobalErrorLevel); 
+        }
     }
 }

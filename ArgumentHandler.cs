@@ -140,6 +140,7 @@ namespace bigbyte
         {
             ToLog.Inf("running: help - display help message");
             Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
+            Exit.auto();
         }
         private static void argumentInstall(string[] args) 
         { 
