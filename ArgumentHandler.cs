@@ -52,13 +52,25 @@ namespace bigbyte
             Dictionary<string, Action> acceptedArguments = new Dictionary<string, Action>
             {
                 { "help", () => argumentHelp(args) },
+                { "h", () => argumentHelp(args) },
                 { "install", () => argumentInstall(args) },
+                { "i", () => argumentInstall(args) },
                 { "remove", () => argumentRemove(args) },
+                { "r", () => argumentRemove(args) },
                 { "force-remove", () => argumentForceRemove(args) },
+                { "forceremove", () => argumentForceRemove(args) },
+                { "fr", () => argumentForceRemove(args) },
                 { "update", () => argumentUpdate(args) },
+                { "u", () => argumentUpdate(args) },
                 { "upgrade", () => argumentUpgrade(args) },
+                { "g", () => argumentUpgrade(args) },
                 { "full-upgrade", () => argumentFullUpgrade(args) },
+                { "fullupgrade", () => argumentFullUpgrade(args) },
+                { "f", () => argumentFullUpgrade(args) },
                 { "run", () => argumentRun(args) },
+                { "execute", () => argumentRun(args) },
+                { "exe", () => argumentRun(args) },
+                { "e", () => argumentRun(args) },
                 { "verify", () => argumentVerify(args) },
             };
 

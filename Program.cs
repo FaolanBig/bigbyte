@@ -40,7 +40,7 @@ namespace bigbyte
             }
             else
             {
-                ToLog.Inf("program (bigbyte) started without arguments showing help");
+                ToLog.Inf("program (bigbyte) started without arguments - showing help");
                 string[] argsTempToHelp = { "help" };
                 ArgumentHandler.analyzer(argsTempToHelp);
             }
