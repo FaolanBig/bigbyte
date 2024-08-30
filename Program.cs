@@ -1,6 +1,8 @@
 ﻿/*
-    bitbyte serves as a package manager.
+    bigbyte serves as a package manager.
     It serves as a management tool for downloading, installing, updating, upgrading, removing and running various software aplications from the command line.
+
+    The latest source code can be found on https://github.com/FaolanBig/bigbyte
 
     Copyright (C) 2024  Carl Öttinger (Carl Oettinger)
 
