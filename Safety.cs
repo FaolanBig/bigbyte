@@ -55,4 +55,9 @@ namespace bigbyte
             Inf("operation finished successfully");
         }
     }
+    internal static class Exit
+    {
+        internal static void success() { Environment.Exit(0); }
+        internal static void errored(int exitCode = 1) { Environment.Exit(exitCode); }
+    }
 }
