@@ -45,8 +45,8 @@ namespace bigbyte
                 if (globalErrorLevel != value)
                 {
                     globalErrorLevel = value;
-                    ToLog.Inf($"global error level changed to value {value}");
-                    ToLog.Err($"global error level changed to value {value}");
+                    ToLog.Inf($"global error level changed to value {value} - GlobalErrorLevel_setTo:{value}");
+                    ToLog.Err($"global error level changed to value {value} - GlobalErrorLevel_setTo:{value}");
                 }
             }
         }
