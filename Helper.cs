@@ -12,7 +12,8 @@ namespace bigbyte
         {
             ToLog.Inf($"reading contents from file: {path}");
             string content = "an unexpected error occurred" +
-                "please report this and your logfile.txt to ";
+                $"please report this and your logfile.txt to {VarHold.IssueURL}" +
+                $"you can then try to find help on {VarHold.WikiURL_Troubleshooting}";
             try
             {
                 content = File.ReadAllText(path);
@@ -22,6 +23,7 @@ namespace bigbyte
             {
                 ToLog.Err($"an error occurred when reading the contents of a file - file path: {path}");
             }
+            return content;
         }
     }
 }
