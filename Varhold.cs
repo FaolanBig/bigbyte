@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,8 @@ namespace bigbyte
 {
     internal static class VarHold
     {
+        public static string workingDir { get; } = AppDomain.CurrentDomain.BaseDirectory;
+        public static string helpFilePath { get; } = workingDir += "showHelp.txt";
         public static string CurrentMainPath {  get { return currentMainPath; } }
         private static string currentMainPath = AppContext.BaseDirectory;
 

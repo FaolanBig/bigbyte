@@ -1,0 +1,32 @@
+﻿Usage: bigbyte [COMMAND] [OPTIONS]
+
+A useful tool for managing installations, upgrades, and package operations. Yes nerds, this is a package manager :)
+
+Available Commands:
+
+  help, h                       Displays this help page
+
+  install, i                    Installs a new package
+
+  remove, r                     Removes an existing package
+
+  force-remove, forceremove, fr Removes a package forcefully, even if errors occur
+
+  update, u                     Updates the list of available packages
+
+  upgrade, g                    Upgrades all installed packages to the latest version
+
+  full-upgrade, fullupgrade, f  Performs a complete upgrade of all packages and dependencies
+
+  run, execute, exe, e          Runs an installed package
+
+  verify                        Verifies the integrity of a package
+
+Examples:
+  bigbyte install <package-name>	Installs a specified package
+  bigbyte remove <package-name>		Removes a specified package
+  bigbyte upgrade					Upgrades all installed packages
+  bigbyte upgrade <package-name>	Upgrades a specified package
+  bigbyte run <package-name>		Runs the specified package
+
+For more information, visit: https://github.com/FaolanBig/bigbyte/wiki/Usage
