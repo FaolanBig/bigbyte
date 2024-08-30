@@ -11,6 +11,9 @@ namespace bigbyte
     {
         public static string workingDir { get; } = AppDomain.CurrentDomain.BaseDirectory;
         public static string helpFilePath { get; } = workingDir += "showHelp.txt";
+        public static string RepoURL { get; } = "https://github.com/FaolanBig/bigbyte";
+        public static string IssueURL { get; } = "https://github.com/FaolanBig/bigbyte/issues/new";
+        public static string WikiURL { get; } = "https://github.com/FaolanBig/bigbyte/wiki";
         public static string CurrentMainPath {  get { return currentMainPath; } }
         private static string currentMainPath = AppContext.BaseDirectory;
 

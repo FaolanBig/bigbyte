@@ -24,5 +24,9 @@ namespace bigbyte
             Log.Error(toLog);
             Log.CloseAndFlush();
         }
+        public static void success()
+        {
+            Inf("operation finished successfully");
+        }
     }
 }
