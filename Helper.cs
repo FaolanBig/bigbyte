@@ -49,7 +49,8 @@ namespace bigbyte
             }
             catch (Exception ex)
             {
-                ToLog.Err($"an error occurred when reading the contents of a file - file path: {path}");
+                VarHold.GlobalErrorLevel = 001001001;
+                ToLog.Err($"an error occurred when reading the contents of a file - file path: {path} - error message: {ex.Message}");
             }
             return content;
         }

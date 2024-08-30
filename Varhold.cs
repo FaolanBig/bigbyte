@@ -37,7 +37,20 @@ namespace bigbyte
 {
     internal static class VarHold
     {
-        public static int GlobalErrorLevel = 0;
+        public static int GlobalErrorLevel
+        {
+            get { return globalErrorLevel; }
+            set
+            {
+                if (globalErrorLevel != value)
+                {
+                    globalErrorLevel = value;
+                    ToLog.Inf($"global error level changed to value {value}");
+                    ToLog.Err($"global error level changed to value {value}");
+                }
+            }
+        }
+        private static int globalErrorLevel = 0;
         public static string workingDir { get; } = AppDomain.CurrentDomain.BaseDirectory;
         public static string helpFilePath { get; } = workingDir += "showHelp.txt";
         public static string RepoURL { get; } = "https://github.com/FaolanBig/bigbyte";
