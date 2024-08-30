@@ -35,7 +35,6 @@ namespace bigbyte
         public static void Inf(string toLog)
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
                 .WriteTo.File(VarHold.LogFileNameInfo)
                 .CreateLogger();
 
@@ -45,7 +44,6 @@ namespace bigbyte
         public static void Err(string toLog)
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
                 .WriteTo.File(VarHold.LogFileNameError)
                 .CreateLogger();
 

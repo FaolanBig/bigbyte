@@ -138,7 +138,8 @@ namespace bigbyte
 
         private static void argumentHelp(string[] args) 
         {
-            ToLog.Inf("running: help");
+            ToLog.Inf("running: help - display help message");
+            Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
         }
         private static void argumentInstall(string[] args) 
         { 
