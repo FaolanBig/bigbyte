@@ -54,5 +54,21 @@ namespace bigbyte
             }
             return content;
         }
+        internal static void SetOperatingSystem_inVarHold()
+        {
+            try
+            {
+                OperatingSystem osInf = Environment.OSVersion;
+                VarHold.OS = osInf.Platform.ToString();
+                VarHold.OS_version = osInf.Version.ToString();
+                VarHold.OS_isWindows = OperatingSystem.IsWindows();
+                ToLog.Inf($"detected: OS (operating system): {VarHold.OS}, OS-version: {VarHold.OS_version}");
+            }
+            catch (Exception ex)
+            {
+                VarHold.GlobalErrorLevel = 002001001;
+                ToLog.Err($"an error occurred when detecting the operating system and its version - error: {ex.Message}");
+            }
+        }
     }
 }

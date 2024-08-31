@@ -51,13 +51,19 @@ namespace bigbyte
             }
         }
         private static int globalErrorLevel = 0;
-        public static string workingDir { get; } = AppDomain.CurrentDomain.BaseDirectory;
-        public static string helpFilePath { get; } = workingDir += "showHelp.txt";
+        public static string baseDirectory { get; } = AppDomain.CurrentDomain.BaseDirectory;
+        public static string LocalIndex_installedPrograms = Path.Combine(baseDirectory, "programs_installed"); // programs will be installed to this directory
+        public static string LocalIndex_availablePrograms = Path.Combine(baseDirectory, "programs_available");
+        public static string OS = "";
+        public static string OS_version = "";
+        public static bool OS_isWindows = false;
+        public static string helpFilePath { get; } = baseDirectory += "showHelp.txt";
         public static string RepoURL { get; } = "https://github.com/FaolanBig/bigbyte";
         public static string IssueURL { get; } = "https://github.com/FaolanBig/bigbyte/issues/new";
         public static string WikiURL { get; } = "https://github.com/FaolanBig/bigbyte/wiki";
         public static string WikiURL_Troubleshooting { get; } = "https://github.com/FaolanBig/bigbyte/wiki/Troubleshooting";
         public static string WikiURL_ExitCodes { get; } = "https://github.com/FaolanBig/bigbyte/wiki/Exit-codes";
+        public static string IndexDataURL { get; } = "https://github.com/FaolanBig/bigbyte_indexData";
         public static string CurrentMainPath {  get { return currentMainPath; } }
         private static string currentMainPath = AppContext.BaseDirectory;
 

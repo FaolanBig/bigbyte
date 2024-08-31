@@ -30,6 +30,8 @@ namespace bigbyte
     {
         static void Main(string[] args)
         {
+            Helper.SetOperatingSystem_inVarHold();
+
             string argumentsOutputHold = "";
             foreach (var arg in args)
             {
