@@ -70,5 +70,13 @@ namespace bigbyte
                 ToLog.Err($"an error occurred when detecting the operating system and its version - error: {ex.Message}");
             }
         }
+        internal static void Check_ifDataDirectoriesAreAvailable_orCreateThem()
+        {
+            if (!Directory.Exists(VarHold.installPath_programs))
+            {
+                Directory.CreateDirectory(VarHold.installPath_programs);
+                ToLog.Inf($"directory created to store installed programs - path: {VarHold.installPath_programs}");
+            }
+        }
     }
 }

@@ -24,31 +24,19 @@
  */
 
 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+
 namespace bigbyte
 {
-    internal class Program
+    internal class IndexHelper
     {
-        static void Main(string[] args)
-        {
-            Helper.SetOperatingSystem_inVarHold();
-            Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
 
-            string argumentsOutputHold = "";
-            foreach (var arg in args)
-            {
-                argumentsOutputHold += arg + " ";
-            }
-            if (!string.IsNullOrEmpty(argumentsOutputHold))
-            {
-                ToLog.Inf($"program (bigbyte) started with arguments: {argumentsOutputHold}");
-                ArgumentHandler.analyzer(args);
-            }
-            else
-            {
-                ToLog.Inf("program (bigbyte) started without arguments - showing help");
-                string[] argsTempToHelp = { "help" };
-                ArgumentHandler.analyzer(argsTempToHelp);
-            }
-        }
     }
 }

@@ -52,8 +52,8 @@ namespace bigbyte
         }
         private static int globalErrorLevel = 0;
         public static string baseDirectory { get; } = AppDomain.CurrentDomain.BaseDirectory;
-        public static string LocalIndex_installedPrograms = Path.Combine(baseDirectory, "programs_installed"); // programs will be installed to this directory
-        public static string LocalIndex_availablePrograms = Path.Combine(baseDirectory, "programs_available");
+        public static string IndexDir = Path.Combine(baseDirectory, "index");
+        public static string installPath_programs = Path.Combine(baseDirectory, "installed");
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
