@@ -52,10 +52,22 @@ namespace bigbyte
                 ToLog.Err($"an error occurred when reading INDEX_remote.json at {VarHold.IndexFile_remote} - error: {ex.Message}");
                 Exit.auto();
             }
-            PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(jsonFileContents);
 
+            try
+            {
+                PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(jsonFileContents);
+            }
+            catch (Exception ex)
+            {
+                VarHold.GlobalErrorLevel = 001002001;
+                ToLog.Err($"an error occurred when deserializing IndexFile_remote - error: {ex.Message}");
+                Exit.auto();
+            }
+            
         }
+
     }
+}
     public class Package
     {
         [JsonPropertyName("name")]
