@@ -35,8 +35,80 @@ using System.Threading.Tasks;
 
 namespace bigbyte
 {
-    internal class IndexHelper
+    public class IndexHelper
     {
+        public IndexHelper() { }
 
+        public void loadINDEX(string path = VarHold.)
+        {
+
+        }
+    }
+    public class Package
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("version")]
+        public string Version { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("author")]
+        public string Author { get; set; }
+
+        [JsonPropertyName("copyright")]
+        public string Copyright { get; set; }
+
+        [JsonPropertyName("license")]
+        public string License { get; set; }
+
+        [JsonPropertyName("dependencies")]
+        public List<string> Dependencies { get; set; }
+
+        [JsonPropertyName("download_url")]
+        public Dictionary<string, string> DownloadUrl { get; set; }
+
+        [JsonPropertyName("checksum")]
+        public Dictionary<string, string> Checksum { get; set; }
+
+        [JsonPropertyName("size_download_MB")]
+        public int SizeDownloadMB { get; set; }
+
+        [JsonPropertyName("size_file_MB")]
+        public int SizeFileMB { get; set; }
+
+        [JsonPropertyName("install_instructions")]
+        [JsonConverter(typeof(InstallInstructionsConverter))]
+        public List<string> InstallInstructions { get; set; }
+
+        [JsonPropertyName("executable")]
+        public Dictionary<string, string> Executable { get; set; }
+    }
+    public class InstallInstructionsConverter : JsonConverter<List<string>>
+    {
+        public override List<string> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            if (reader.TokenType == JsonTokenType.String) { return new List<string> { reader.GetString() }; }
+            else if (reader.TokenType == JsonTokenType.StartArray) { return JsonSerializer.Deserialize<List<string>>(ref reader, options); }
+            else { throw new JsonException(); }
+        }
+
+        public override void Write(Utf8JsonWriter writer, List<string> value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, options);
+        }
+    }
+    public class PackageRepository
+    {
+        [JsonPropertyName("repository")]
+        public string Repository { get; set; }
+
+        [JsonPropertyName("version")]
+        public string Version { get; set; }
+
+        [JsonPropertyName("packages")]
+        public List<Package> Packages { get; set; }
     }
 }

@@ -53,11 +53,13 @@ namespace bigbyte
         private static int globalErrorLevel = 0;
         public static string baseDirectory { get; } = AppDomain.CurrentDomain.BaseDirectory;
         public static string IndexDir = Path.Combine(baseDirectory, "index");
+        public static string IndexFile_remote = Path.Combine(IndexDir, "INDEX_remote.json");
+        public static string IndexFile_local = Path.Combine(IndexDir, "INDEX_local.json");
         public static string installPath_programs = Path.Combine(baseDirectory, "installed");
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
-        public static string helpFilePath { get; } = baseDirectory += "showHelp.txt";
+        public static string helpFilePath { get; } = Path.Combine(baseDirectory, "showHelp.txt");
         public static string RepoURL { get; } = "https://github.com/FaolanBig/bigbyte";
         public static string IssueURL { get; } = "https://github.com/FaolanBig/bigbyte/issues/new";
         public static string WikiURL { get; } = "https://github.com/FaolanBig/bigbyte/wiki";
