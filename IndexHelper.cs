@@ -39,8 +39,20 @@ namespace bigbyte
     {
         public IndexHelper() { }
 
-        public void loadINDEX(string path = VarHold.)
+        public void loadINDEX_remote()
         {
+            string jsonFileContents = "";
+            try
+            {
+                jsonFileContents = File.ReadAllText(VarHold.IndexFile_remote);
+            }
+            catch (Exception ex)
+            {
+                VarHold.GlobalErrorLevel = 001001003;
+                ToLog.Err($"an error occurred when reading INDEX_remote.json at {VarHold.IndexFile_remote} - error: {ex.Message}");
+                Exit.auto();
+            }
+            PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(jsonFileContents);
 
         }
     }
