@@ -37,37 +37,42 @@ namespace bigbyte
 {
     public class IndexHelper
     {
-        public IndexHelper() { }
-
-        public void loadINDEX_remote()
+        string pathToJSON = "";
+        public IndexHelper(string path) 
         {
+            this.pathToJSON = path;
+            this.loadINDEX();
+        }
+
+        public void loadINDEX()
+        {
+            PrintIn.blue("loading index file");
             string jsonFileContents = "";
             try
             {
-                jsonFileContents = File.ReadAllText(VarHold.IndexFile_remote);
+                jsonFileContents = File.ReadAllText(this.pathToJSON);
             }
             catch (Exception ex)
             {
                 VarHold.GlobalErrorLevel = 001001003;
-                ToLog.Err($"an error occurred when reading INDEX_remote.json at {VarHold.IndexFile_remote} - error: {ex.Message}");
+                ToLog.Err($"an error occurred when reading INDEX_remote.json at {this.pathToJSON} - error: {ex.Message}");
                 Exit.auto();
             }
 
             try
             {
-                PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(jsonFileContents);
+                PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(this.pathToJSON);
             }
             catch (Exception ex)
             {
                 VarHold.GlobalErrorLevel = 001002001;
-                ToLog.Err($"an error occurred when deserializing IndexFile_remote - error: {ex.Message}");
+                ToLog.Err($"an error occurred when deserializing an IndexFile at {this.pathToJSON} - error: {ex.Message}");
                 Exit.auto();
             }
             
         }
 
     }
-}
     public class Package
     {
         [JsonPropertyName("name")]
@@ -109,6 +114,9 @@ namespace bigbyte
 
         [JsonPropertyName("executable")]
         public Dictionary<string, string> Executable { get; set; }
+
+        [JsonPropertyName("help")]
+        public string Help { get; set; }
     }
     public class InstallInstructionsConverter : JsonConverter<List<string>>
     {

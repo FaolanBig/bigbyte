@@ -103,7 +103,10 @@ namespace bigbyte
                 { "s", () => argumentSearch(args) },
                 { "details", () => argumentDetails(args) },
                 { "detail", () => argumentDetails(args) },
-                { "d", () => argumentDetails(args) }
+                { "d", () => argumentDetails(args) },
+                { "add", () => argumentAddPackage(args) },
+                { "a", () => argumentAddPackage(args) }
+
             };
 
             if (!acceptedArguments.ContainsKey(args[0]))
@@ -151,16 +154,19 @@ namespace bigbyte
         { 
             ToLog.Inf("running: install");
             PrintIn.blue("running: install");
+            ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentRemove(string[] args) 
         {
             ToLog.Inf("running: remove");
             PrintIn.blue("running: remove");
+            ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentForceRemove(string[] args) 
         {
             ToLog.Inf("running: force-remove");
             PrintIn.blue("running: force-remove");
+            ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentUpdate(string[] args) 
         {
@@ -181,20 +187,43 @@ namespace bigbyte
         {
             ToLog.Inf("running: run");
             PrintIn.blue("running: run");
+            ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentVerify(string[] args) 
         {
             ToLog.Inf("running: verify");
             PrintIn.blue("running: verify");
+            ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentSearch(string[] args)
         {
-            ToLog.Inf("running: search");
+            ToLog.Inf($"running: search - searching for {args[1]}");
             PrintIn.blue("running: search");
+            ArgumentHandler_errors.MissingPackageName(args);
+
         }
         private static void argumentDetails(string[] args)
         {
-
+            ToLog.Inf("running: details");
+            PrintIn.blue("running: details");
+            ArgumentHandler_errors.MissingPackageName(args);
+        }
+        private static void argumentAddPackage(string[] args)
+        {
+            ToLog.Inf("running: add");
+            PrintIn.blue("running: add");
+        }
+    }
+    internal class ArgumentHandler_errors()
+    {
+        internal static void MissingPackageName(string[] args)
+        {
+            if (args.Length <= 1)
+            {
+                PrintIn.red("missing argument: package name");
+                VarHold.GlobalErrorLevel = 003001001;
+                Exit.auto();
+            }
         }
     }
 }
