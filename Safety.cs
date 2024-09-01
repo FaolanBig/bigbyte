@@ -1,4 +1,4 @@
-﻿/*
+/*
     bigbyte serves as a package manager.
     It serves as a management tool for downloading, installing, updating, upgrading, removing and running various software aplications from the command line.
 
@@ -70,7 +70,10 @@ namespace bigbyte
         internal static void auto() 
         {
             ToLog.Inf($"exiting bigbyte with exit code {VarHold.GlobalErrorLevel} - see {VarHold.WikiURL_ExitCodes} for more information on exit codes");
+            if (VarHold.GlobalErrorLevel == 0) { PrintIn.green("bigbyte exit: success"); }
+            else { PrintIn.red($"bigbyte exit: code {VarHold.GlobalErrorLevel} - visit {VarHold.}"); }
             Environment.Exit(VarHold.GlobalErrorLevel); 
+            
         }
     }
 }
