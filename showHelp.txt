@@ -22,11 +22,15 @@ Available Commands:
 
   verify                        Verifies the integrity of a package
 
+  search, s						Searches for available packages
+
+  details, d					Shows details about a package
+
 Examples:
-  bigbyte install <package-name>	Installs a specified package
-  bigbyte remove <package-name>		Removes a specified package
-  bigbyte upgrade					Upgrades all installed packages
-  bigbyte upgrade <package-name>	Upgrades a specified package
-  bigbyte run <package-name>		Runs the specified package
+	bigbyte install <package-name>	Installs a specified package
+	bigbyte remove <package-name>	Removes a specified package
+	bigbyte upgrade					Upgrades all installed packages
+	bigbyte upgrade <package-name>	Upgrades a specified package
+	bigbyte run <package-name>		Runs the specified package
 
 For more information, visit: https://github.com/FaolanBig/bigbyte/wiki/Usage

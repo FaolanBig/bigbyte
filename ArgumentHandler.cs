@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -98,11 +99,16 @@ namespace bigbyte
                 { "exe", () => argumentRun(args) },
                 { "e", () => argumentRun(args) },
                 { "verify", () => argumentVerify(args) },
+                { "search", () => argumentSearch(args) },
+                { "s", () => argumentSearch(args) },
+                { "details", () => argumentDetails(args) },
+                { "detail", () => argumentDetails(args) },
+                { "d", () => argumentDetails(args) }
             };
 
             if (!acceptedArguments.ContainsKey(args[0]))
             {
-                ToLog.Err($"bad argument: {args[0]} | try help to see accepted arguments");
+                PrintIn.red($"bad argument: {args[0]} | try help to see accepted arguments");
             }
             else
             {
@@ -137,40 +143,58 @@ namespace bigbyte
         private static void argumentHelp(string[] args) 
         {
             ToLog.Inf("running: help - display help message");
+            PrintIn.blue("running: help - display help message");
             Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
             Exit.auto();
         }
         private static void argumentInstall(string[] args) 
         { 
             ToLog.Inf("running: install");
+            PrintIn.blue("running: install");
         }
         private static void argumentRemove(string[] args) 
         {
             ToLog.Inf("running: remove");
+            PrintIn.blue("running: remove");
         }
         private static void argumentForceRemove(string[] args) 
         {
             ToLog.Inf("running: force-remove");
+            PrintIn.blue("running: force-remove");
         }
         private static void argumentUpdate(string[] args) 
         {
             ToLog.Inf("running: update");
+            PrintIn.blue("running: update");
         }
         private static void argumentUpgrade(string[] args) 
         {
             ToLog.Inf("running: upgrade");
+            PrintIn.blue("running: upgrade");
         }
         private static void argumentFullUpgrade(string[] args) 
         {
             ToLog.Inf("running: full-upgrade");
+            PrintIn.blue("running: full-upgrade");
         }
         private static void argumentRun(string[] args) 
         {
             ToLog.Inf("running: run");
+            PrintIn.blue("running: run");
         }
         private static void argumentVerify(string[] args) 
         {
             ToLog.Inf("running: verify");
+            PrintIn.blue("running: verify");
+        }
+        private static void argumentSearch(string[] args)
+        {
+            ToLog.Inf("running: search");
+            PrintIn.blue("running: search");
+        }
+        private static void argumentDetails(string[] args)
+        {
+
         }
     }
 }

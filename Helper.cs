@@ -62,6 +62,7 @@ namespace bigbyte
                 VarHold.OS = osInf.Platform.ToString();
                 VarHold.OS_version = osInf.Version.ToString();
                 VarHold.OS_isWindows = OperatingSystem.IsWindows();
+                VarHold.OS_isLinux = OperatingSystem.IsLinux();
                 ToLog.Inf($"detected: OS (operating system): {VarHold.OS}, OS-version: {VarHold.OS_version}");
             }
             catch (Exception ex)

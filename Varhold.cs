@@ -59,6 +59,7 @@ namespace bigbyte
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
+        public static bool OS_isLinux= false;
         public static string helpFilePath { get; } = Path.Combine(baseDirectory, "showHelp.txt");
         public static string RepoURL { get; } = "https://github.com/FaolanBig/bigbyte";
         public static string IssueURL { get; } = "https://github.com/FaolanBig/bigbyte/issues/new";
