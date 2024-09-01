@@ -30,6 +30,7 @@ namespace bigbyte
     {
         static void Main(string[] args)
         {
+            ToLog.Inf("... bigbyte ...");
             Helper.SetOperatingSystem_inVarHold();
             Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
 
@@ -49,6 +50,7 @@ namespace bigbyte
                 string[] argsTempToHelp = { "help" };
                 ArgumentHandler.analyzer(argsTempToHelp);
             }
+            Exit.auto();
         }
     }
 }

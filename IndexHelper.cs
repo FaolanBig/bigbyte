@@ -32,25 +32,29 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace bigbyte
 {
     public class IndexHelper
     {
-        string pathToJSON = "";
+        private string pathToJSON = "";
+        private PackageRepository index;
+
         public IndexHelper(string path) 
         {
             this.pathToJSON = path;
             this.loadINDEX();
         }
 
-        public void loadINDEX()
+        private void loadINDEX()
         {
             PrintIn.blue("loading index file");
             string jsonFileContents = "";
             try
             {
-                jsonFileContents = File.ReadAllText(this.pathToJSON);
+                //jsonFileContents = File.ReadAllText(this.pathToJSON);
+                jsonFileContents = File.ReadAllText(this.pathToJSON, new System.Text.UTF8Encoding(false));
             }
             catch (Exception ex)
             {
@@ -61,7 +65,7 @@ namespace bigbyte
 
             try
             {
-                PackageRepository repository = JsonSerializer.Deserialize<PackageRepository>(this.pathToJSON);
+                this.index = JsonSerializer.Deserialize<PackageRepository>(this.pathToJSON);
             }
             catch (Exception ex)
             {
@@ -69,9 +73,33 @@ namespace bigbyte
                 ToLog.Err($"an error occurred when deserializing an IndexFile at {this.pathToJSON} - error: {ex.Message}");
                 Exit.auto();
             }
-            
         }
+        internal void searchForPackage(string packageName)
+        {
+            ToLog.Inf($"performing package search for {packageName} in {this.pathToJSON}");
 
+            var foundPackages = this.index.Packages
+            .Where(p => p.Name.Contains(packageName, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+            if (foundPackages.Any())
+            {
+                PrintIn.green($"{foundPackages.Count} packages found");
+                Console.WriteLine();
+
+                int count = 0;
+                foreach (var package in foundPackages)
+                {
+                    Console.WriteLine($"[{++count}] -> name: {package.Name}, version: {package.Version}, describtion: {package.Description}");
+                }
+            }
+            else
+            {
+                PrintIn.red($"no packages found containing string {packageName}");
+                VarHold.GlobalErrorLevel = 004001001;
+                Exit.auto();
+            }
+        }
     }
     public class Package
     {

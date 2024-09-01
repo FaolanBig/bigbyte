@@ -201,6 +201,25 @@ namespace bigbyte
             PrintIn.blue("running: search");
             ArgumentHandler_errors.MissingPackageName(args);
 
+            if (args.Length == 3)
+            {
+                if (args[2] == "local" || args[2] == "l" || args[2] == "installed" || args[2] == "i")
+                {
+                    IndexHelper index = new IndexHelper(VarHold.IndexFile_local);
+                    index.searchForPackage(args[1]);
+                }
+                else if (args[2] == "remote" || args[2] == "r" || args[2] == "all" || args[2] == "a")
+                {
+                    IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
+                    index.searchForPackage(args[1]);
+                }
+            }
+            else
+            {
+                IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
+                index.searchForPackage(args[1]);
+            }
+
         }
         private static void argumentDetails(string[] args)
         {
@@ -216,9 +235,9 @@ namespace bigbyte
     }
     internal class ArgumentHandler_errors()
     {
-        internal static void MissingPackageName(string[] args)
+        internal static void MissingPackageName(string[] args, int length = 1)
         {
-            if (args.Length <= 1)
+            if (args.Length <= length)
             {
                 PrintIn.red("missing argument: package name");
                 VarHold.GlobalErrorLevel = 003001001;
