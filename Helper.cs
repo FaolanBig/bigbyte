@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -88,7 +89,12 @@ namespace bigbyte
         {
             if (!File.Exists(VarHold.IndexFile_remote))
             {
-                
+                DownloadAgent downloadAgent = new DownloadAgent();
+                downloadAgent.TargetURL = VarHold.IndexFile_remote_URL;
+                downloadAgent.DestinationDirectory = VarHold.IndexDir;
+                downloadAgent.FileName = VarHold.IndexFile_remote_name;
+
+                downloadAgent.downloadFromTarget_singleFileRaw();
             }
         }
     }

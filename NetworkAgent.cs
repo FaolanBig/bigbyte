@@ -89,7 +89,7 @@ namespace bigbyte
             }
         }
     }
-    internal class DowloadAgent
+    internal class DownloadAgent
     {
         protected string destinationDirectory = "";
         public string DestinationDirectory 
@@ -130,7 +130,7 @@ namespace bigbyte
                 }
             }
         }
-        public DowloadAgent() { }
+        public DownloadAgent() { }
         
         public void downloadFromTarget_singleFileRaw()
         {

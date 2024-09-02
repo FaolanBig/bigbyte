@@ -54,6 +54,7 @@ namespace bigbyte
         public static string baseDirectory { get; } = AppDomain.CurrentDomain.BaseDirectory;
         public static string IndexDir = Path.Combine(baseDirectory, "index");
         public static string IndexFile_remote_name = "INDEX_remote.json";
+        public static string IndexFile_remote_URL = "https://raw.githubusercontent.com/FaolanBig/bigbyte_indexData/main/INDEX_remote.json";
         public static string IndexFile_remote = Path.Combine(IndexDir, IndexFile_remote_name);
         public static string IndexFile_local_name = "INDEX_local.json";
         public static string IndexFile_local = Path.Combine(IndexDir, IndexFile_local_name);
