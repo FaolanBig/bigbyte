@@ -111,7 +111,7 @@ namespace bigbyte
 
             if (!acceptedArguments.ContainsKey(args[0]))
             {
-                PrintIn.red($"bad argument: {args[0]} | try help to see accepted arguments");
+                PrintIn.red($"bad argument: {args[0]} | try 'bigbyte help' to see accepted arguments");
             }
             else
             {
@@ -146,20 +146,20 @@ namespace bigbyte
         private static void argumentHelp(string[] args) 
         {
             ToLog.Inf("running: help - display help message");
-            PrintIn.blue("running: help - display help message");
+            //PrintIn.blue("running: help - display help message");
             Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
             Exit.auto();
         }
         private static void argumentInstall(string[] args) 
         { 
             ToLog.Inf("running: install");
-            PrintIn.blue("running: install");
+            //PrintIn.blue("running: install");
             ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentRemove(string[] args) 
         {
             ToLog.Inf("running: remove");
-            PrintIn.blue("running: remove");
+            //PrintIn.blue("running: remove");
             ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentForceRemove(string[] args) 
@@ -171,34 +171,34 @@ namespace bigbyte
         private static void argumentUpdate(string[] args) 
         {
             ToLog.Inf("running: update");
-            PrintIn.blue("running: update");
+            //PrintIn.blue("running: update");
         }
         private static void argumentUpgrade(string[] args) 
         {
             ToLog.Inf("running: upgrade");
-            PrintIn.blue("running: upgrade");
+            //PrintIn.blue("running: upgrade");
         }
         private static void argumentFullUpgrade(string[] args) 
         {
             ToLog.Inf("running: full-upgrade");
-            PrintIn.blue("running: full-upgrade");
+            //PrintIn.blue("running: full-upgrade");
         }
         private static void argumentRun(string[] args) 
         {
             ToLog.Inf("running: run");
-            PrintIn.blue("running: run");
+            //PrintIn.blue("running: run");
             ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentVerify(string[] args) 
         {
             ToLog.Inf("running: verify");
-            PrintIn.blue("running: verify");
+            //PrintIn.blue("running: verify");
             ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentSearch(string[] args)
         {
             ToLog.Inf($"running: search - searching for {args[1]}");
-            PrintIn.blue("running: search");
+            //PrintIn.blue("running: search");
             ArgumentHandler_errors.MissingPackageName(args);
 
             if (args.Length == 3)
@@ -224,13 +224,13 @@ namespace bigbyte
         private static void argumentDetails(string[] args)
         {
             ToLog.Inf("running: details");
-            PrintIn.blue("running: details");
+            //PrintIn.blue("running: details");
             ArgumentHandler_errors.MissingPackageName(args);
         }
         private static void argumentAddPackage(string[] args)
         {
             ToLog.Inf("running: add");
-            PrintIn.blue("running: add");
+            //PrintIn.blue("running: add");
         }
     }
     internal class ArgumentHandler_errors()

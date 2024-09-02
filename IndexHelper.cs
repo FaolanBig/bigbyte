@@ -49,7 +49,7 @@ namespace bigbyte
 
         private void loadINDEX()
         {
-            PrintIn.blue("loading index file");
+            //PrintIn.blue("loading index file");
             string jsonFileContents = "";
             try
             {
@@ -90,7 +90,11 @@ namespace bigbyte
                 int count = 0;
                 foreach (var package in foundPackages)
                 {
-                    Console.WriteLine($"[{++count}] -> name: {package.Name}, version: {package.Version}, describtion: {package.Description}");
+                    string count_string = Convert.ToString(count);
+
+                    Console.WriteLine($"[{++count}] -> name: {package.Name}\n" +
+                        $"{new string(' ', count_string.Length + 2)} -> version: {package.Version}\n" +
+                        $"{new string(' ', count_string.Length + 2)} -> describtion: {package.Description}");
                 }
             }
             else

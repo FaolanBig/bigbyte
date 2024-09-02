@@ -30,7 +30,7 @@ namespace bigbyte
     {
         static void Main(string[] args)
         {
-            ToLog.Inf("... bigbyte ...");
+            ToLog.Inf("... bigbyte started ...");
             Helper.SetOperatingSystem_inVarHold();
             Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
 
