@@ -95,6 +95,7 @@ namespace bigbyte
                     Console.WriteLine($"[{++count}] -> name: {package.Name}\n" +
                         $"{new string(' ', count_string.Length + 2)} -> version: {package.Version}\n" +
                         $"{new string(' ', count_string.Length + 2)} -> describtion: {package.Description}");
+                    Console.WriteLine();
                 }
             }
             else
