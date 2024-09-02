@@ -26,6 +26,7 @@
 
 
 
+using Serilog.Parsing;
 using System.Net.NetworkInformation;
 
 
@@ -85,6 +86,84 @@ namespace bigbyte
             {
                 ToLog.Err("connection failed");
                 return false;
+            }
+        }
+    }
+    internal class DowloadAgent
+    {
+        protected string destinationDirectory = "";
+        public string DestinationDirectory 
+        {
+            get { return destinationDirectory; }
+            set
+            {
+                if (value != destinationDirectory)
+                {
+                    ToLog.Inf($"DowloadAgent - destination path set to {destinationDirectory}");
+                    destinationDirectory = value;
+                }
+            }
+        }
+        protected string targetURL = "";
+        public string TargetURL
+        {
+            get { return targetURL; }
+            set
+            {
+                if (value != targetURL)
+                {
+                    ToLog.Inf($"DowloadAgent - destination path set to {targetURL}");
+                    targetURL = value;
+                }
+            }
+        }
+        protected string fileName = "";
+        public string FileName
+        {
+            get { return fileName; }
+            set
+            {
+                if (value != targetURL)
+                {
+                    ToLog.Inf($"DowloadAgent - fileName set to {targetURL}");
+                    targetURL = value;
+                }
+            }
+        }
+        public DowloadAgent() { }
+        
+        public void downloadFromTarget_singleFileRaw()
+        {
+            if (string.IsNullOrEmpty(targetURL) || string.IsNullOrEmpty(destinationDirectory) || string.IsNullOrEmpty(fileName))
+            {
+                VarHold.GlobalErrorLevel = 005001001;
+                Exit.auto();
+            }
+            try
+            {
+                ToLog.Inf($"fetching file from {TargetURL} to {destinationDirectory}");
+                Task.Run(async () => await DownloadFileAsync()).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        async Task DownloadFileAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(TargetURL);
+                response.EnsureSuccessStatusCode();
+
+                if (!Directory.Exists(DestinationDirectory)) { Directory.CreateDirectory(DestinationDirectory); }
+
+                string filePath = Path.Combine(DestinationDirectory, FileName);
+
+                await using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await response.Content.CopyToAsync(fileStream);
+                }
             }
         }
     }

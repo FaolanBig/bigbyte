@@ -78,6 +78,18 @@ namespace bigbyte
                 Directory.CreateDirectory(VarHold.installPath_programs);
                 ToLog.Inf($"directory created to store installed programs - path: {VarHold.installPath_programs}");
             }
+            if (!Directory.Exists(VarHold.IndexDir))
+            {
+                Directory.CreateDirectory (VarHold.IndexDir);
+                ToLog.Inf($"directory created to store index files - path: {VarHold.installPath_programs}");
+            }
+        }
+        internal static void Check_ifDataFilesAreAvailable_orCreateThem()
+        {
+            if (!File.Exists(VarHold.IndexFile_remote))
+            {
+                
+            }
         }
     }
 }
