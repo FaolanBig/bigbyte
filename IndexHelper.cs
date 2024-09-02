@@ -105,6 +105,29 @@ namespace bigbyte
                 Exit.auto();
             }
         }
+        internal string printHelpFromPackage(string packageName)
+        {
+            if (getPackageExists(packageName))
+            {
+                var package = index.Packages.Find(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+                //var package = index.Packages.Find(p => p.Name.Contains(packageName, StringComparison.OrdinalIgnoreCase));
+
+                Console.WriteLine($"help for package '{package.Name}': ");
+                Console.WriteLine($"[1] -> {package.Help}");
+                return package.Help;
+            }
+            else
+            {
+                PrintIn.red($"error: no package found when searching for {packageName}");
+                VarHold.GlobalErrorLevel = 004001001;
+                Exit.auto();
+                return "error: package not found";
+            }
+        }
+        internal bool getPackageExists(string packageName)
+        {
+            return index.Packages.Any(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+        }
     }
     public class Package
     {

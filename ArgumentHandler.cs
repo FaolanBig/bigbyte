@@ -145,10 +145,18 @@ namespace bigbyte
 
         private static void argumentHelp(string[] args) 
         {
-            ToLog.Inf("running: help - display help message");
-            //PrintIn.blue("running: help - display help message");
-            Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
-            Exit.auto();
+            if (args.Length == 2)
+            {
+                IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
+                index.printHelpFromPackage(args[1]);
+            }
+            else
+            {
+                ToLog.Inf("running: help - display help message");
+                //PrintIn.blue("running: help - display help message");
+                Console.WriteLine(Helper.GetFileContentsTxt(VarHold.helpFilePath));
+                Exit.auto();
+            }
         }
         private static void argumentInstall(string[] args) 
         { 
@@ -213,11 +221,23 @@ namespace bigbyte
                     IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
                     index.searchForPackage(args[1]);
                 }
+                else
+                {
+                    PrintIn.red("error: bad arguments");
+                    VarHold.GlobalErrorLevel = 003001000;
+                    Exit.auto();
+                }
             }
-            else
+            else if (args.Length == 2)
             {
                 IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
                 index.searchForPackage(args[1]);
+            }
+            else
+            {
+                PrintIn.red("error: bad arguments");
+                VarHold.GlobalErrorLevel = 003001000;
+                Exit.auto();
             }
 
         }
