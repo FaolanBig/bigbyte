@@ -256,6 +256,8 @@ namespace bigbyte
                                 if (displayPackageNameAtProgress) { DisplayProgress(downloadNumber, packageName, receivedBytes, totalBytes, consoleLine); }
                                 else { DisplayProgress(downloadNumber, fileName, receivedBytes, totalBytes, consoleLine); }
                             }
+                            if (displayPackageNameAtProgress) { DisplayProgress(downloadNumber, packageName, totalBytes, totalBytes, consoleLine); }
+                            else { DisplayProgress(downloadNumber, fileName, totalBytes, totalBytes, consoleLine); }
                         }
                     }
                 }
@@ -283,20 +285,19 @@ namespace bigbyte
         }*/
         private static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
         {
-            int progressBarWidth = 20;  // Breite des Fortschrittsbalkens
+            int progressBarWidth = 50;  // Breite des Fortschrittsbalkens
             double progressPercentage = (totalBytes > 0) ? (double)receivedBytes / totalBytes : 0;
             int progressBlocks = (int)(progressPercentage * progressBarWidth);
 
-            // Erstelle den Fortschrittsbalken
             string progressBar = new string('=', progressBlocks) + (progressBlocks < progressBarWidth ? ">" : "") + new string(' ', progressBarWidth - progressBlocks);
 
-            // Cursor an die richtige Position setzen und Fortschritt anzeigen
-            lock (Console.Out)  // Synchronisation für Konsolenausgabe
+            lock (Console.Out)
             {
-                int currentLine = Console.CursorTop;  // Aktuelle Zeile speichern
-                Console.SetCursorPosition(0, consoleLine);  // Cursor zu der Zeile des aktuellen Downloads setzen
-                Console.Write($"[{downloadNumber}]({packageName})[{progressBar}] | {progressPercentage:P2}");
-                Console.SetCursorPosition(0, currentLine);  // Cursor zurücksetzen
+                int currentLine = Console.CursorTop;
+                Console.SetCursorPosition(0, consoleLine);
+                if (receivedBytes != totalBytes) { Console.Write($"[{downloadNumber}] -> ({packageName}):[{progressBar}] | {progressPercentage:P2}"); }
+                else { Console.Write($"[{downloadNumber}] -> ({packageName}):[{progressBar}] | {progressPercentage:P2} - finished"); }
+                Console.SetCursorPosition(0, currentLine);
             }
         }
     }
