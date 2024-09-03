@@ -52,14 +52,16 @@ namespace bigbyte
         }
         private static int globalErrorLevel = 0;
         public static string baseDirectory { get; } = AppDomain.CurrentDomain.BaseDirectory;
-        public static string IndexDir = Path.Combine(baseDirectory, "index");
+        public static string filesCommon = Path.Combine(baseDirectory, "common");
+        public static string IndexDir = Path.Combine(filesCommon, "index");
         public static string IndexFile_remote_name = "INDEX_remote.json";
         public static string IndexFile_remote_URL = "https://raw.githubusercontent.com/FaolanBig/bigbyte_indexData/main/INDEX_remote.json";
         public static string IndexFile_remote = Path.Combine(IndexDir, IndexFile_remote_name);
         public static string IndexFile_local_name = "INDEX_local.json";
         public static string IndexFile_local = Path.Combine(IndexDir, IndexFile_local_name);
-        public static string filesCommon = Path.Combine(baseDirectory, "common");
         public static string installPath_programs = Path.Combine(filesCommon, "installed");
+        public static string tempDirectory = Path.Combine(filesCommon, "temp");
+        public static string tempDirectory_downloads = Path.Combine(tempDirectory, "downloads");
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
