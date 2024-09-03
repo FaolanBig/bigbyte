@@ -191,10 +191,12 @@ namespace bigbyte
         public List<string> fileNames = new List<string>();
         public List<string> packageNames = new List<string>();
         public List<string> destinationDirectories = new List<string>();
+        public List<string> tempDirectories = new List<string>();
         public bool displayPackageNameAtProgress = true; //displays the package name at the progress bar instead of the file name
         public DownloadAgent_multiFile() { }
         public void invokeDownload()
         {
+            Console.Clear();
             Task.Run(startDownload).GetAwaiter().GetResult();
         }
         private async Task startDownload()
@@ -262,7 +264,7 @@ namespace bigbyte
             {
                 ToLog.Err($"download failed - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url} - error: {ex.Message}");
                 PrintIn.red("error: download failed due to an networking error\n" +
-                    $"       see {VarHold.WikiURL_Troubleshooting} for some help");
+                    $"       visit {VarHold.WikiURL_Troubleshooting} for some help");
                 VarHold.GlobalErrorLevel = 006001001;
                 Exit.auto();
             }
