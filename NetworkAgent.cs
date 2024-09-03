@@ -143,7 +143,7 @@ namespace bigbyte
             try
             {
                 ToLog.Inf($"fetching file from {TargetURL} to {destinationDirectory}");
-                Task.Run(async () => await DownloadFileAsync()).GetAwaiter().GetResult();
+                Task.Run(DownloadFileAsync).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -187,13 +187,17 @@ namespace bigbyte
     }
     public class DownloadAgent_multiFile
     {
-        public List<string> targetURLs;
-        public List<string> fileNames;
-        public List<string> packageNames;
-        public List<string> destinationDirectories;
+        public List<string> targetURLs = new List<string>();
+        public List<string> fileNames = new List<string>();
+        public List<string> packageNames = new List<string>();
+        public List<string> destinationDirectories = new List<string>();
         public bool displayPackageNameAtProgress = true; //displays the package name at the progress bar instead of the file name
         public DownloadAgent_multiFile() { }
-        public async void invokeDownload()
+        public void invokeDownload()
+        {
+            Task.Run(startDownload).GetAwaiter().GetResult();
+        }
+        private async Task startDownload()
         {
             int numberOfDownloads = targetURLs.Count;
             if (fileNames.Count != numberOfDownloads || packageNames.Count != numberOfDownloads || destinationDirectories.Count != numberOfDownloads)
@@ -211,7 +215,7 @@ namespace bigbyte
             }
             await Task.WhenAll(downloadTasks);
         }
-        static async Task DownloadFileWithProgressAsync(string url, string destinationDirectory, string fileName, string packageName, int downloadNumber, int consoleLine, bool displayPackageNameAtProgress)
+        private static async Task DownloadFileWithProgressAsync(string url, string destinationDirectory, string fileName, string packageName, int downloadNumber, int consoleLine, bool displayPackageNameAtProgress)
         {
             ToLog.Inf($"download {downloadNumber} started - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url}");
             try
@@ -257,8 +261,8 @@ namespace bigbyte
             catch (Exception ex)
             {
                 ToLog.Err($"download failed - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url} - error: {ex.Message}");
-                PrintIn.red("error: download failed due to an networking error" +
-                    $"        see {VarHold.WikiURL_Troubleshooting} for some help");
+                PrintIn.red("error: download failed due to an networking error\n" +
+                    $"       see {VarHold.WikiURL_Troubleshooting} for some help");
                 VarHold.GlobalErrorLevel = 006001001;
                 Exit.auto();
             }
@@ -274,7 +278,7 @@ namespace bigbyte
 
             Console.Write($"\r[{downloadNumber}]({fileName})[{progressBar}] | {progressPercentage:P2}");
         }*/
-        static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
+        private static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
         {
             int progressBarWidth = 20;  // Breite des Fortschrittsbalkens
             double progressPercentage = (totalBytes > 0) ? (double)receivedBytes / totalBytes : 0;
