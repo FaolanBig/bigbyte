@@ -197,6 +197,7 @@ namespace bigbyte
         public void invokeDownload()
         {
             Console.Clear();
+            Console.WriteLine("downloads:");
             Task.Run(startDownload).GetAwaiter().GetResult();
         }
         private async Task startDownload()
