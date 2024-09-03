@@ -150,6 +150,23 @@ namespace bigbyte
 
             }
         }
+        /*async Task DownloadFileAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.GetAsync(TargetURL);
+                response.EnsureSuccessStatusCode();
+
+                if (!Directory.Exists(DestinationDirectory)) { Directory.CreateDirectory(DestinationDirectory); }
+
+                string filePath = Path.Combine(DestinationDirectory, FileName);
+
+                await using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await response.Content.CopyToAsync(fileStream);
+                }
+            }
+        }*/
         async Task DownloadFileAsync()
         {
             using (HttpClient client = new HttpClient())

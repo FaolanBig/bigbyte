@@ -163,6 +163,12 @@ namespace bigbyte
             ToLog.Inf("running: install");
             //PrintIn.blue("running: install");
             ArgumentHandler_errors.MissingPackageName(args);
+
+            if (args.Length == 2)
+            {
+                IndexHelper index = new IndexHelper(VarHold.IndexFile_remote);
+                index.downloadPackage(args[1]);
+            }
         }
         private static void argumentRemove(string[] args) 
         {

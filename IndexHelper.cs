@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -137,7 +138,26 @@ namespace bigbyte
                 VarHold.GlobalErrorLevel = 004001001;
                 Exit.auto();
             }
+            var package = index.Packages.Find(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+            DownloadAgent_multiFile downloader = new DownloadAgent_multiFile();
 
+            string downloadURL = "";
+            if (VarHold.OS_isWindows) { package.DownloadUrl.TryGetValue("windows", out downloadURL); }
+            if (VarHold.OS_isLinux) { package.DownloadUrl.TryGetValue("linux", out downloadURL); }
+
+            if (string.IsNullOrEmpty(downloadURL))
+            {
+                ToLog.Err($"package installed failed - missing targetURL");
+                PrintIn.red($"error: installation failed");
+                VarHold.GlobalErrorLevel = 007001001;
+                Exit.auto();
+            }
+            downloader.targetURLs.Add(downloadURL);
+            downloader.destinationDirectories.Add(VarHold.installPath_programs);
+            downloader.packageNames.Add(package.Name);
+            downloader.fileNames.Add(package.Name);
+
+            downloader.invokeDownload();
         }
     }
     public class Package
