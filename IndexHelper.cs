@@ -157,7 +157,7 @@ namespace bigbyte
             downloader.packageNames.Add(package.Name);
             downloader.fileNames.Add(package.Name);
 
-            downloader.startDownload();
+            downloader.invokeDownload();
         }
     }
     public class Package
