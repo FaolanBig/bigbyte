@@ -1,4 +1,4 @@
-﻿/*
+/*
     bigbyte serves as a package manager.
     It serves as a management tool for downloading, installing, updating, upgrading, removing and running various software aplications from the command line.
 
@@ -193,6 +193,10 @@ namespace bigbyte
         public List<string> destinationDirectories;
         public bool displayPackageNameAtProgress = true; //displays the package name at the progress bar instead of the file name
         public DownloadAgent_multiFile() { }
+        public void startDownload()
+        {
+            Task.Run(async () => await invokeDownload()).GetAwaiter().GetResult();
+        }
         public async void invokeDownload()
         {
             int numberOfDownloads = targetURLs.Count;
