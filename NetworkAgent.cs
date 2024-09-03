@@ -27,6 +27,7 @@
 
 
 using Serilog.Parsing;
+using System;
 using System.Net.NetworkInformation;
 
 
@@ -89,7 +90,7 @@ namespace bigbyte
             }
         }
     }
-    internal class DownloadAgent
+    public class DownloadAgent_singleFile
     {
         protected string destinationDirectory = "";
         public string DestinationDirectory 
@@ -130,7 +131,7 @@ namespace bigbyte
                 }
             }
         }
-        public DownloadAgent() { }
+        public DownloadAgent_singleFile() { }
         
         public void downloadFromTarget_singleFileRaw()
         {
@@ -164,6 +165,114 @@ namespace bigbyte
                 {
                     await response.Content.CopyToAsync(fileStream);
                 }
+            }
+        }
+    }
+    public class DownloadAgent_multiFile
+    {
+        public List<string> targetURLs;
+        public List<string> fileNames;
+        public List<string> packageNames;
+        public List<string> destinationDirectories;
+        public bool displayPackageNameAtProgress = true; //displays the package name at the progress bar instead of the file name
+        public DownloadAgent_multiFile() { }
+        public async void invokeDownload()
+        {
+            int numberOfDownloads = targetURLs.Count;
+            if (fileNames.Count != numberOfDownloads || packageNames.Count != numberOfDownloads || destinationDirectories.Count != numberOfDownloads)
+            {
+                ToLog.Err($"download failed: wrong quantity of parameters set");
+                PrintIn.red("error: download failed due to an internal error");
+                VarHold.GlobalErrorLevel = 005001002;
+                Exit.auto();
+            }
+            Task[] downloadTasks = new Task[numberOfDownloads];
+
+            for (int i = 0; i < numberOfDownloads; i++)
+            {
+                downloadTasks[i] = DownloadFileWithProgressAsync(targetURLs[i], destinationDirectories[i], fileNames[i], packageNames[i], i + 1, i + 1, displayPackageNameAtProgress);
+            }
+            await Task.WhenAll(downloadTasks);
+        }
+        static async Task DownloadFileWithProgressAsync(string url, string destinationDirectory, string fileName, string packageName, int downloadNumber, int consoleLine, bool displayPackageNameAtProgress)
+        {
+            ToLog.Inf($"download {downloadNumber} started - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url}");
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+                    response.EnsureSuccessStatusCode();
+
+                    long totalBytes = response.Content.Headers.ContentLength ?? -1L;
+                    long receivedBytes = 0L;
+
+                    if (!Directory.Exists(destinationDirectory))
+                    {
+                        Directory.CreateDirectory(destinationDirectory);
+                    }
+
+                    string filePath = Path.Combine(destinationDirectory, fileName);
+
+                    await using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        using (var httpStream = await response.Content.ReadAsStreamAsync())
+                        {
+                            byte[] buffer = new byte[8192];  // 8 KB Puffer
+                            int bytesRead;
+
+                            if (displayPackageNameAtProgress) { DisplayProgress(downloadNumber, packageName, 0, totalBytes, consoleLine); }
+                            else { DisplayProgress(downloadNumber, fileName, 0, totalBytes, consoleLine); }
+
+                            while ((bytesRead = await httpStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                receivedBytes += bytesRead;
+
+                                if (displayPackageNameAtProgress) { DisplayProgress(downloadNumber, packageName, receivedBytes, totalBytes, consoleLine); }
+                                else { DisplayProgress(downloadNumber, fileName, receivedBytes, totalBytes, consoleLine); }
+                            }
+                        }
+                    }
+                }
+                ToLog.Inf($"download {downloadNumber} finished successfully - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url}");
+            }
+            catch (Exception ex)
+            {
+                ToLog.Err($"download failed - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url} - error: {ex.Message}");
+                PrintIn.red("error: download failed due to an networking error" +
+                    $"        see {VarHold.WikiURL_Troubleshooting} for some help");
+                VarHold.GlobalErrorLevel = 006001001;
+                Exit.auto();
+            }
+        }
+
+        /*static void DisplayProgress(int downloadNumber, string fileName, long receivedBytes, long totalBytes)
+        {
+            int progressBarWidth = 20;
+            double progressPercentage = (totalBytes > 0) ? (double)receivedBytes / totalBytes : 0;
+            int progressBlocks = (int)(progressPercentage * progressBarWidth);
+
+            string progressBar = new string('=', progressBlocks) + (progressBlocks < progressBarWidth ? ">" : "") + new string(' ', progressBarWidth - progressBlocks);
+
+            Console.Write($"\r[{downloadNumber}]({fileName})[{progressBar}] | {progressPercentage:P2}");
+        }*/
+        static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
+        {
+            int progressBarWidth = 20;  // Breite des Fortschrittsbalkens
+            double progressPercentage = (totalBytes > 0) ? (double)receivedBytes / totalBytes : 0;
+            int progressBlocks = (int)(progressPercentage * progressBarWidth);
+
+            // Erstelle den Fortschrittsbalken
+            string progressBar = new string('=', progressBlocks) + (progressBlocks < progressBarWidth ? ">" : "") + new string(' ', progressBarWidth - progressBlocks);
+
+            // Cursor an die richtige Position setzen und Fortschritt anzeigen
+            lock (Console.Out)  // Synchronisation für Konsolenausgabe
+            {
+                int currentLine = Console.CursorTop;  // Aktuelle Zeile speichern
+                Console.SetCursorPosition(0, consoleLine);  // Cursor zu der Zeile des aktuellen Downloads setzen
+                Console.Write($"[{downloadNumber}]({packageName})[{progressBar}] | {progressPercentage:P2}");
+                Console.SetCursorPosition(0, currentLine);  // Cursor zurücksetzen
             }
         }
     }

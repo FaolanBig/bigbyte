@@ -107,7 +107,7 @@ namespace bigbyte
         }
         internal string printHelpFromPackage(string packageName)
         {
-            if (getPackageExists(packageName))
+            if (packageExists(packageName))
             {
                 var package = index.Packages.Find(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
                 //var package = index.Packages.Find(p => p.Name.Contains(packageName, StringComparison.OrdinalIgnoreCase));
@@ -124,9 +124,20 @@ namespace bigbyte
                 return "error: package not found";
             }
         }
-        internal bool getPackageExists(string packageName)
+        internal bool packageExists(string packageName)
         {
             return index.Packages.Any(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+        }
+        internal void downloadPackage(string packageName)
+        {
+            if (!packageExists(packageName))
+            {
+                PrintIn.red($"error: package not found: {packageName}");
+                ToLog.Err($"@downloadPackage - package not found: {packageName}");
+                VarHold.GlobalErrorLevel = 004001001;
+                Exit.auto();
+            }
+
         }
     }
     public class Package

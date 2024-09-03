@@ -89,7 +89,7 @@ namespace bigbyte
         {
             if (!File.Exists(VarHold.IndexFile_remote))
             {
-                DownloadAgent downloadAgent = new DownloadAgent();
+                DownloadAgent_singleFile downloadAgent = new DownloadAgent_singleFile();
                 downloadAgent.TargetURL = VarHold.IndexFile_remote_URL;
                 downloadAgent.DestinationDirectory = VarHold.IndexDir;
                 downloadAgent.FileName = VarHold.IndexFile_remote_name;

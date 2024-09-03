@@ -58,7 +58,7 @@ namespace bigbyte
         public static string IndexFile_remote = Path.Combine(IndexDir, IndexFile_remote_name);
         public static string IndexFile_local_name = "INDEX_local.json";
         public static string IndexFile_local = Path.Combine(IndexDir, IndexFile_local_name);
-        public static string installPath_programs = Path.Combine(baseDirectory, "installed");
+        public static string installPath_programs = Path.Combine(baseDirectory, "common");
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
