@@ -28,6 +28,7 @@
 
 using Serilog.Parsing;
 using System;
+using System.IO.Compression;
 using System.Net.NetworkInformation;
 
 
@@ -191,16 +192,24 @@ namespace bigbyte
         public List<string> fileNames = new List<string>();
         public List<string> packageNames = new List<string>();
         public List<string> destinationDirectories = new List<string>();
-        public List<string> tempDirectories = new List<string>();
+        public List<string> tempFileNames = new List<string>();
         public bool displayPackageNameAtProgress = true; //displays the package name at the progress bar instead of the file name
         public DownloadAgent_multiFile() { }
         public void invokeDownload()
         {
+            for (int i = 0; i < targetURLs.Count; i++)
+            {
+                tempFileNames.Add(new Random().Next(100_000_000, 1_000_000_000).ToString("D16")); //maybe add '.zip'
+            }
             Console.Clear();
             Console.WriteLine("downloads:");
             Task.Run(startDownload).GetAwaiter().GetResult();
+            for (int i = 0; i < targetURLs.Count; i++)
+            {
+                ExtractZipWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
+            }
         }
-        private async Task startDownload()
+        protected async Task startDownload()
         {
             int numberOfDownloads = targetURLs.Count;
             if (fileNames.Count != numberOfDownloads || packageNames.Count != numberOfDownloads || destinationDirectories.Count != numberOfDownloads)
@@ -214,13 +223,13 @@ namespace bigbyte
 
             for (int i = 0; i < numberOfDownloads; i++)
             {
-                downloadTasks[i] = DownloadFileWithProgressAsync(targetURLs[i], destinationDirectories[i], fileNames[i], packageNames[i], i + 1, i + 1, displayPackageNameAtProgress);
+                downloadTasks[i] = DownloadFileWithProgressAsync(targetURLs[i], tempFileNames[i], packageNames[i], i + 1, i + 1, displayPackageNameAtProgress);
             }
             await Task.WhenAll(downloadTasks);
         }
-        private static async Task DownloadFileWithProgressAsync(string url, string destinationDirectory, string fileName, string packageName, int downloadNumber, int consoleLine, bool displayPackageNameAtProgress)
+        protected static async Task DownloadFileWithProgressAsync(string url, string fileName, string packageName, int downloadNumber, int consoleLine, bool displayPackageNameAtProgress)
         {
-            ToLog.Inf($"download {downloadNumber} started - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url}");
+            ToLog.Inf($"download {downloadNumber} started - fileName: {fileName}, package: {packageName}, url: {url}");
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -231,12 +240,7 @@ namespace bigbyte
                     long totalBytes = response.Content.Headers.ContentLength ?? -1L;
                     long receivedBytes = 0L;
 
-                    if (!Directory.Exists(destinationDirectory))
-                    {
-                        Directory.CreateDirectory(destinationDirectory);
-                    }
-
-                    string filePath = Path.Combine(destinationDirectory, fileName);
+                    string filePath = Path.Combine(VarHold.tempDirectory_downloads, fileName);
 
                     await using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
@@ -261,11 +265,11 @@ namespace bigbyte
                         }
                     }
                 }
-                ToLog.Inf($"download {downloadNumber} finished successfully - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url}");
+                ToLog.Inf($"download {downloadNumber} finished successfully - fileName: {fileName}, package: {packageName}, url: {url}");
             }
             catch (Exception ex)
             {
-                ToLog.Err($"download failed - fileName: {fileName}, package: {packageName}, destination: {destinationDirectory}, url: {url} - error: {ex.Message}");
+                ToLog.Err($"download failed - fileName: {fileName}, package: {packageName}, url: {url} - error: {ex.Message}");
                 PrintIn.red("error: download failed due to an networking error\n" +
                     $"       visit {VarHold.WikiURL_Troubleshooting} for some help");
                 VarHold.GlobalErrorLevel = 006001001;
@@ -283,7 +287,7 @@ namespace bigbyte
 
             Console.Write($"\r[{downloadNumber}]({fileName})[{progressBar}] | {progressPercentage:P2}");
         }*/
-        private static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
+        protected static void DisplayProgress(int downloadNumber, string packageName, long receivedBytes, long totalBytes, int consoleLine)
         {
             int progressBarWidth = 50;  // Breite des Fortschrittsbalkens
             double progressPercentage = (totalBytes > 0) ? (double)receivedBytes / totalBytes : 0;
@@ -296,9 +300,48 @@ namespace bigbyte
                 int currentLine = Console.CursorTop;
                 Console.SetCursorPosition(0, consoleLine);
                 if (receivedBytes != totalBytes) { Console.Write($"[{downloadNumber}] -> ({packageName}):[{progressBar}] | {progressPercentage:P2}"); }
-                else { Console.Write($"[{downloadNumber}] -> ({packageName}):[{progressBar}] | {progressPercentage:P2} - finished"); }
+                else { Console.Write($"fetching: [{downloadNumber}] -> ({packageName}):[{progressBar}] | {progressPercentage:P2} - finished"); }
                 Console.SetCursorPosition(0, currentLine);
             }
+        }
+        protected void ExtractZipWithProgress(string zipPath, string extractPath, int number)
+        {
+            Console.WriteLine();
+            ToLog.Inf($"extracting {zipPath} to {extractPath}");
+            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            {
+                int totalFiles = archive.Entries.Count;
+                int extractedFiles = 0;
+
+                foreach (var entry in archive.Entries)
+                {
+                    if (!string.IsNullOrEmpty(entry.Name))
+                    {
+                        string destinationPath = Path.Combine(extractPath, entry.FullName);
+                        if (!Directory.Exists(destinationPath)) { Helper.createDir(destinationPath); }
+                        //Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
+                        entry.ExtractToFile(destinationPath, true);
+
+                        extractedFiles++;
+                        DisplayProgress_extract(extractedFiles, totalFiles, entry.FullName, number);
+                    }
+                }
+            }
+        }
+        protected void DisplayProgress_extract(int extracted, int total, string currentFile, int consoleLine)
+        {
+            int percentage = (int)((double)extracted / total * 100);
+            int progressBarWidth = 20;
+            int progressBlocks = (int)(percentage / 100.0 * progressBarWidth);
+
+            int currentLine = Console.CursorTop;
+            Console.SetCursorPosition(0, consoleLine);
+            Console.Write($"extracting: ({currentFile}) [{extracted}/{total}] [");
+            Console.Write(new string('=', progressBlocks));
+            Console.Write((progressBlocks < progressBarWidth ? ">" : ""));
+            Console.Write(new string(' ', progressBarWidth - progressBlocks));
+            Console.Write($"] | {percentage}% ");
+            Console.SetCursorPosition(0, currentLine);
         }
     }
 }

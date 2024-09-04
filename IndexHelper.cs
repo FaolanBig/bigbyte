@@ -112,7 +112,7 @@ namespace bigbyte
             {
                 var package = index.Packages.Find(p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
                 //var package = index.Packages.Find(p => p.Name.Contains(packageName, StringComparison.OrdinalIgnoreCase));
-
+                ToLog.Inf($"showing help for package: {package.Name}");
                 Console.WriteLine($"help for package '{package.Name}': ");
                 Console.WriteLine($"[1] -> {package.Help}");
                 return package.Help;
@@ -153,7 +153,7 @@ namespace bigbyte
                 Exit.auto();
             }
             downloader.targetURLs.Add(downloadURL);
-            downloader.destinationDirectories.Add(VarHold.installPath_programs);
+            downloader.destinationDirectories.Add(Path.Combine(VarHold.installPath_programs, package.Name + "_" + package.Version));
             downloader.packageNames.Add(package.Name);
             downloader.fileNames.Add(package.Name);
 

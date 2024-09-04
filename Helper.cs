@@ -32,6 +32,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace bigbyte
 {
@@ -84,6 +85,23 @@ namespace bigbyte
                 Directory.CreateDirectory (VarHold.IndexDir);
                 ToLog.Inf($"directory created to store index files - path: {VarHold.installPath_programs}");
             }
+            if (!Directory.Exists(VarHold.filesCommon))
+            {
+                createDir(VarHold.filesCommon);
+            }
+            if (!Directory.Exists(VarHold.tempDirectory))
+            {
+                createDir(VarHold.tempDirectory);
+            }
+            if (!Directory.Exists(VarHold.tempDirectory_downloads))
+            {
+                createDir(VarHold.tempDirectory_downloads);
+            }
+        }
+        internal static void createDir(string path)
+        {
+            Directory.CreateDirectory(path);
+            ToLog.Inf($"created directory at {path}");
         }
         internal static void Check_ifDataFilesAreAvailable_orCreateThem()
         {
