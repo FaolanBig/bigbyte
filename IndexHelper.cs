@@ -119,7 +119,8 @@ namespace bigbyte
             }
             else
             {
-                PrintIn.red($"error: no package found when searching for {packageName}");
+                PrintIn.red($"error: no package found when searching for {packageName}\n" +
+                    $"       try 'bigbyte search {packageName}' to find the correct package name");
                 VarHold.GlobalErrorLevel = 004001001;
                 Exit.auto();
                 return "error: package not found";

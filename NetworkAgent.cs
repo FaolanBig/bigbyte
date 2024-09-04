@@ -30,6 +30,10 @@ using Serilog.Parsing;
 using System;
 using System.IO.Compression;
 using System.Net.NetworkInformation;
+using SharpCompress.Archives;
+using SharpCompress.Archives.GZip;
+using SharpCompress.Archives.Tar;
+using SharpCompress.Common;
 
 
 namespace bigbyte
@@ -206,7 +210,8 @@ namespace bigbyte
             Task.Run(startDownload).GetAwaiter().GetResult();
             for (int i = 0; i < targetURLs.Count; i++)
             {
-                ExtractZipWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
+                //ExtractZipWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
+                ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
             }
         }
         protected async Task startDownload()
@@ -306,7 +311,7 @@ namespace bigbyte
         }
         protected void ExtractZipWithProgress(string zipPath, string extractPath, int number)
         {
-            Console.WriteLine();
+            //Console.WriteLine();
             ToLog.Inf($"extracting {zipPath} to {extractPath}");
             using (ZipArchive archive = ZipFile.OpenRead(zipPath))
             {
@@ -324,6 +329,35 @@ namespace bigbyte
 
                         extractedFiles++;
                         DisplayProgress_extract(extractedFiles, totalFiles, entry.FullName, number);
+                    }
+                }
+            }
+        }
+        protected void ExtractTarGzWithProgress(string tarGzPath, string extractPath, int number)
+        {
+            //  Console.WriteLine();
+            ToLog.Inf($"extracting {tarGzPath} to {extractPath}");
+            using (var stream = File.OpenRead(tarGzPath))
+            using (var gzipArchive = GZipArchive.Open(stream))
+            {
+                var tarStream = gzipArchive.Entries.First().OpenEntryStream();
+                using (var tarArchive = TarArchive.Open(tarStream))
+                {
+                    int totalFiles = tarArchive.Entries.Count;
+                    int extractedFiles = 0;
+
+                    foreach (var entry in tarArchive.Entries)
+                    {
+                        if (!entry.IsDirectory)
+                        {
+                            string destinationPath = Path.Combine(extractPath, entry.Key);
+                            if (!Directory.Exists(destinationPath)) { Helper.createDir(destinationPath); }
+                            //Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
+                            entry.WriteToFile(destinationPath, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+
+                            extractedFiles++;
+                            DisplayProgress_extract(extractedFiles, totalFiles, entry.Key, number);
+                        }
                     }
                 }
             }
