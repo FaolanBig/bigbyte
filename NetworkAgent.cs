@@ -34,6 +34,8 @@ using SharpCompress.Archives;
 using SharpCompress.Archives.GZip;
 using SharpCompress.Archives.Tar;
 using SharpCompress.Common;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
 
 
 namespace bigbyte
@@ -203,16 +205,23 @@ namespace bigbyte
         {
             for (int i = 0; i < targetURLs.Count; i++)
             {
-                tempFileNames.Add(new Random().Next(100_000_000, 1_000_000_000).ToString("D16")); //maybe add '.zip'
+                //tempFileNames.Add(new Random().Next(100_000_000, 1_000_000_000).ToString("D10")); //maybe add '.zip'
+                tempFileNames.Add("DB-Matcher-v5.tar.gz"); //maybe add '.zip'
             }
             Console.Clear();
             Console.WriteLine("downloads:");
             Task.Run(startDownload).GetAwaiter().GetResult();
+            Console.WriteLine("extracting");
             for (int i = 0; i < targetURLs.Count; i++)
             {
                 //ExtractZipWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
-                ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
+                //ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
+                //ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i], i + 1);
+                //ExtractTarGz(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i]);
+                //ExtractTarGz(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i]);
+                ExtractTarGz_alternative(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i]);
             }
+            Console.WriteLine("finished");
         }
         protected async Task startDownload()
         {
@@ -341,7 +350,7 @@ namespace bigbyte
             using (var gzipArchive = GZipArchive.Open(stream))
             {
                 var tarStream = gzipArchive.Entries.First().OpenEntryStream();
-                using (var tarArchive = TarArchive.Open(tarStream))
+                using (var tarArchive = SharpCompress.Archives.Tar.TarArchive.Open(tarStream))
                 {
                     int totalFiles = tarArchive.Entries.Count;
                     int extractedFiles = 0;
@@ -357,6 +366,53 @@ namespace bigbyte
 
                             extractedFiles++;
                             DisplayProgress_extract(extractedFiles, totalFiles, entry.Key, number);
+                        }
+                    }
+                }
+            }
+        }
+        protected void ExtractTarGz(string tarGzPath, string extractPath)
+        {
+            using (var stream = File.OpenRead(tarGzPath))
+            using (var gzipArchive = GZipArchive.Open(stream)) // Zuerst .gz-Archiv öffnen
+            {
+                var tarEntry = gzipArchive.Entries.FirstOrDefault(); // Die TAR-Datei aus dem GZ-Archiv erhalten
+                if (tarEntry == null)
+                {
+                    throw new InvalidOperationException("Keine TAR-Datei im GZip-Archiv gefunden.");
+                }
+                
+                using (var tarStream = tarEntry.OpenEntryStream()) // TAR-Dateistream öffnen
+                using (var tarArchive = SharpCompress.Archives.Tar.TarArchive.Open(tarStream)) // TAR-Archiv öffnen
+                {
+                    foreach (var entry in tarArchive.Entries)
+                    {
+                        if (!entry.IsDirectory)
+                        {
+                            Console.WriteLine($"Extrahiere: {entry.Key}");
+                            entry.WriteToDirectory(extractPath, new ExtractionOptions { ExtractFullPath = true, Overwrite = true });
+                        }
+                    }
+                }
+            }
+        }
+        static void ExtractTarGz_alternative(string tarGzPath, string extractPath) // that's the shit that works - all others are fucked
+        {
+            using (FileStream fs = File.OpenRead(tarGzPath))
+            using (GZipInputStream gzipStream = new GZipInputStream(fs))
+            using (TarInputStream tarStream = new TarInputStream(gzipStream))
+            {
+                TarEntry entry;
+                while ((entry = tarStream.GetNextEntry()) != null)
+                {
+                    if (!entry.IsDirectory)
+                    {
+                        string outPath = Path.Combine(extractPath, entry.Name);
+                        Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+
+                        using (FileStream outFile = File.Create(outPath))
+                        {
+                            tarStream.CopyEntryContents(outFile);
                         }
                     }
                 }
