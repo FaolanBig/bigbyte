@@ -212,9 +212,9 @@ namespace bigbyte
             Console.WriteLine("downloads:");
             Task.Run(startDownload).GetAwaiter().GetResult();
             Console.Clear();
-            Console.WriteLine("extracting");
             for (int i = 0; i < targetURLs.Count; i++)
             {
+                Console.WriteLine($"extracting: {packageNames[i]}");
                 //ExtractZipWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
                 //ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i], i + 1);
                 //ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i], i + 1);
