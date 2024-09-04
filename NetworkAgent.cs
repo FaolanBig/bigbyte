@@ -211,6 +211,7 @@ namespace bigbyte
             Console.Clear();
             Console.WriteLine("downloads:");
             Task.Run(startDownload).GetAwaiter().GetResult();
+            Console.Clear();
             Console.WriteLine("extracting");
             for (int i = 0; i < targetURLs.Count; i++)
             {
@@ -219,7 +220,8 @@ namespace bigbyte
                 //ExtractTarGzWithProgress(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i], i + 1);
                 //ExtractTarGz(Path.Combine(VarHold.tempDirectory_downloads, tempFileNames[i]), destinationDirectories[i]);
                 //ExtractTarGz(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i]);
-                ExtractTarGz_alternative(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i]);
+                //ExtractTarGz_alternative(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i]);
+                ExtractTarGz_alternative_withProgress(Path.Combine(VarHold.tempDirectory_downloads, "DB-Matcher-v5.tar.gz"), destinationDirectories[i], i);
             }
             Console.WriteLine("finished");
         }
@@ -418,6 +420,40 @@ namespace bigbyte
                 }
             }
         }
+        //###################################
+        protected void ExtractTarGz_alternative_withProgress(string tarGzPath, string extractPath, int packageIndex)
+        {
+            using (FileStream fs = File.OpenRead(tarGzPath))
+            using (GZipInputStream gzipStream = new GZipInputStream(fs))
+            using (TarInputStream tarStream = new TarInputStream(gzipStream))
+            {
+                long totalSize = fs.Length;
+                long totalBytesRead = 0;
+
+                TarEntry entry;
+                while ((entry = tarStream.GetNextEntry()) != null)
+                {
+                    if (!entry.IsDirectory)
+                    {
+                        string outPath = Path.Combine(extractPath, entry.Name);
+                        Directory.CreateDirectory(Path.GetDirectoryName(outPath));
+
+                        using (FileStream outFile = File.Create(outPath))
+                        {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while ((bytesRead = tarStream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                outFile.Write(buffer, 0, bytesRead);
+                                totalBytesRead += bytesRead;
+                                //DisplayProgress_extract_bytes(totalBytesRead, totalSize, entry.Name, packageIndex);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //###################################
         protected void DisplayProgress_extract(int extracted, int total, string currentFile, int consoleLine)
         {
             int percentage = (int)((double)extracted / total * 100);
@@ -431,6 +467,13 @@ namespace bigbyte
             Console.Write((progressBlocks < progressBarWidth ? ">" : ""));
             Console.Write(new string(' ', progressBarWidth - progressBlocks));
             Console.Write($"] | {percentage}% ");
+            Console.SetCursorPosition(0, currentLine);
+        }
+        protected void DisplayProgress_extract_bytes(long extracted, long total, string currentFile, int packageIndex)
+        {
+            int currentLine = Console.CursorTop;
+            Console.SetCursorPosition(0, packageIndex);
+            Console.Write($"extracting: [{packageIndex + 1}] -> ({packageNames[packageIndex]}):[{extracted}/{total}]");
             Console.SetCursorPosition(0, currentLine);
         }
     }
