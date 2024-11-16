@@ -97,6 +97,10 @@ namespace bigbyte
             {
                 createDir(VarHold.tempDirectory_downloads);
             }
+            if (!Directory.Exists(VarHold.configDirectory))
+            {
+                createDir(VarHold.configDirectory);
+            }
         }
         internal static void createDir(string path)
         {
