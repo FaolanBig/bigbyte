@@ -20,7 +20,7 @@ Available Commands:
 
   run, execute, exe, e          Runs an installed package
 
-  verify                        Verifies the integrity of a package
+  verify, v                     Verifies the integrity of a package
 
   search, s						Searches for available packages
 

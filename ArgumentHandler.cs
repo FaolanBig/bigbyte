@@ -99,6 +99,7 @@ namespace bigbyte
                 { "exe", () => argumentRun(args) },
                 { "e", () => argumentRun(args) },
                 { "verify", () => argumentVerify(args) },
+                { "v", () => argumentVerify(args) },
                 { "search", () => argumentSearch(args) },
                 { "s", () => argumentSearch(args) },
                 { "details", () => argumentDetails(args) },
