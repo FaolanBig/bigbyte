@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace bigbyte
@@ -33,10 +34,24 @@ namespace bigbyte
 
     public class ConfigStruct
     {
+    }
+    public class Destinations
+    {
         public string IndexDir { get; set; }
         public string installPath_programs { get; set; }
         public string tempDirectory { get; set; }
         public string helpFilePath { get; set; }
-        public string[] IndexDataURL {  get; set; }
+    }
+    public class Sources
+    {
+        public string IndexDataURL { get; set; }
+    }
+    public class Appearance
+    {
+
+    }
+    public class colors
+    {
+        public ConsoleColor progressBarDone { get; set; }
     }
 }
