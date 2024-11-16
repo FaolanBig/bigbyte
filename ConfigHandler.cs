@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,17 +24,37 @@ namespace bigbyte
     {
         internal static void initConfiguration_default()
         {
-            ToLog.Inf("initializing default config (main)");
+            ToLog.Inf($"initializing default config (main) to {VarHold.configMain}");
 
             ConfigStruct defaultConfig = new ConfigStruct()
             {
-                ////////////////////
+                Destinations = new Destinations
+                {
+                    IndexDir = VarHold.IndexDir,
+                    installPath_programs = VarHold.installPath_programs,
+                    tempDirectory = VarHold.tempDirectory,
+                    helpFilePath = VarHold.helpFilePath
+                },
+                Sources = new Sources
+                {
+                    IndexDataURL = VarHold.IndexDataURL
+                },
+                Appearance = new Appearance
+                {
+                    Colors = new Colors
+                    {
+                        progressBarDone = ConsoleColor.Green
+                    }
+                }
             };
         }
     }
 
     public class ConfigStruct
     {
+        public Destinations Destinations { get; set; }
+        public Sources Sources { get; set; }
+        public Appearance Appearance { get; set; }
     }
     public class Destinations
     {
@@ -48,9 +69,9 @@ namespace bigbyte
     }
     public class Appearance
     {
-
+        public Colors Colors { get; set; }
     }
-    public class colors
+    public class Colors
     {
         public ConsoleColor progressBarDone { get; set; }
     }
