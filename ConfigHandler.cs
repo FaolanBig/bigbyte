@@ -43,7 +43,16 @@ namespace bigbyte
                 {
                     Colors = new Colors
                     {
-                        progressBarDone = ConsoleColor.Green
+                        mainForeground = ConsoleColor.Black
+                    },
+                    ProgressBarAppearance = new ProgressBarAppearance
+                    {
+                        ProgressBarOnBottom = false,
+                        ForegroundColor = ConsoleColor.Yellow,
+                        ForegroundColorDone = ConsoleColor.DarkGreen,
+                        BackgroundColor = ConsoleColor.DarkGray,
+                        ProgressCharacter = '█',
+                        BackgroundCharacter = '\u2593'
                     }
                 }
             };
@@ -70,9 +79,19 @@ namespace bigbyte
     public class Appearance
     {
         public Colors Colors { get; set; }
+        public ProgressBarAppearance ProgressBarAppearance { get; set; }
     }
     public class Colors
     {
-        public ConsoleColor progressBarDone { get; set; }
+        public ConsoleColor mainForeground { get; set; }
+    }
+    public class ProgressBarAppearance
+    {
+        public bool ProgressBarOnBottom { get; set; }
+        public ConsoleColor ForegroundColor { get; set; }
+        public ConsoleColor ForegroundColorDone { get; set; }
+        public ConsoleColor BackgroundColor { get; set; }
+        public char ProgressCharacter { get; set; }
+        public char? BackgroundCharacter { get; set; }
     }
 }

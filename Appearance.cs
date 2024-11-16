@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace bigbyte
 {
-    internal class Appearance
-    {
-    }
     internal class PrintIn
     {
         public static void blue(string toPrint)
