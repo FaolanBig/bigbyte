@@ -37,5 +37,6 @@ namespace bigbyte
         public string installPath_programs { get; set; }
         public string tempDirectory { get; set; }
         public string helpFilePath { get; set; }
+        public string[] IndexDataURL {  get; set; }
     }
 }
