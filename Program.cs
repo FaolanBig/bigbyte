@@ -24,12 +24,44 @@
  */
 
 
+using ShellProgressBar;
+using System;
+
 namespace bigbyte
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            /*#############################
+             *####### JUST TESTING ########
+             *### REMOVE BEFORE PUSHING ###
+             *///##########################
+            int max = 200;
+            var opt = new ProgressBarOptions
+            {
+                //ProgressCharacter = '#',
+                ProgressBarOnBottom = false,
+                ForegroundColor = ConsoleColor.Yellow,
+                ForegroundColorDone = ConsoleColor.DarkGreen,
+                BackgroundColor = ConsoleColor.DarkGray,
+                BackgroundCharacter = '\u2593'
+            };
+
+            using (var bar = new ProgressBar(max, "test1", opt))
+            {
+                for (int i = 0; i < max; i++)
+                {
+                    bar.Tick();
+                    Thread.Sleep(50);
+                }
+            }
+
+            Exit.auto();
+
+            /*#############################
+             *######## END TESTING ########
+             *///##########################
             ToLog.Inf("... bigbyte started ...");
             Helper.SetOperatingSystem_inVarHold();
             Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
