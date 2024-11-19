@@ -200,6 +200,9 @@ namespace bigbyte
         [JsonConverter(typeof(InstallInstructionsConverter))]
         public List<string> InstallInstructions { get; set; }
 
+        [JsonPropertyName("install_executable")]
+        public Dictionary<string, string> Install_Executable { get; set; }
+
         [JsonPropertyName("executable")]
         public Dictionary<string, string> Executable { get; set; }
 
