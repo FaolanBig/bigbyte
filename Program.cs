@@ -38,6 +38,29 @@ namespace bigbyte
              *### REMOVE BEFORE PUSHING ###
              *///##########################
 
+
+            // Titel anzeigen
+            AnsiConsole.MarkupLine("[bold green]Willkommen bei Spectre.Console![/]");
+
+            // Fortschrittsanzeige
+            AnsiConsole.Progress()
+                .Start(ctx =>
+                {
+                    // Einen Fortschrittsbalken erstellen
+                    var task = ctx.AddTask("[green]Daten werden verarbeitet...[/]");
+
+                    // Fortschritt simulieren
+                    while (!task.IsFinished)
+                    {
+                        task.Increment(5); // Fortschritt um 5% erhöhen
+                        System.Threading.Thread.Sleep(200); // Verzögerung
+                    }
+                });
+
+            // Abschlussmeldung
+            AnsiConsole.MarkupLine("[bold magenta]Alle Aufgaben abgeschlossen![/]");
+
+
             Exit.auto();
 
             /*#############################
