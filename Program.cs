@@ -24,8 +24,8 @@
  */
 
 
-using ShellProgressBar;
 using System;
+using Spectre.Console;
 
 namespace bigbyte
 {
@@ -37,35 +37,7 @@ namespace bigbyte
              *####### JUST TESTING ########
              *### REMOVE BEFORE PUSHING ###
              *///##########################
-            int max = 200;
-            var opt = new ProgressBarOptions
-            {
-                //ProgressCharacter = '#',
-                ProgressBarOnBottom = false,
-                ForegroundColor = ConsoleColor.Yellow,
-                ForegroundColorDone = ConsoleColor.DarkGreen,
-                BackgroundColor = ConsoleColor.DarkGray,
-                BackgroundCharacter = '\u2593'
-            };
-            var optChild = new ProgressBarOptions
-            {
-                ProgressBarOnBottom = false,
-                ForegroundColor = ConsoleColor.DarkYellow,
-                ForegroundColorDone = ConsoleColor.DarkGreen,
-                BackgroundColor = ConsoleColor.DarkGray,
-                BackgroundCharacter = '\u2593'
-            };
 
-            using (var bar = new ProgressBar(max, "test1", opt))
-            {
-                /*for (int i = 0; i < max; i++)
-                {
-                    bar.Tick();
-                    Thread.Sleep(50);
-                }*/
-                
-            }
-            
             Exit.auto();
 
             /*#############################
