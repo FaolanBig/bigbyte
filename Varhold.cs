@@ -62,6 +62,8 @@ namespace bigbyte
         public static string installPath_programs = Path.Combine(filesCommon, "installed");
         public static string tempDirectory = Path.Combine(filesCommon, "temp");
         public static string tempDirectory_downloads = Path.Combine(tempDirectory, "downloads");
+        public static string configDirectory = Path.Combine(baseDirectory, "config");
+        public static string configMain = Path.Combine(configDirectory, "mainCfg.json");
         public static string OS = "";
         public static string OS_version = "";
         public static bool OS_isWindows = false;
