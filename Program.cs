@@ -47,21 +47,31 @@ namespace bigbyte
                 BackgroundColor = ConsoleColor.DarkGray,
                 BackgroundCharacter = '\u2593'
             };
+            var optChild = new ProgressBarOptions
+            {
+                ProgressBarOnBottom = false,
+                ForegroundColor = ConsoleColor.DarkYellow,
+                ForegroundColorDone = ConsoleColor.DarkGreen,
+                BackgroundColor = ConsoleColor.DarkGray,
+                BackgroundCharacter = '\u2593'
+            };
 
             using (var bar = new ProgressBar(max, "test1", opt))
             {
-                for (int i = 0; i < max; i++)
+                /*for (int i = 0; i < max; i++)
                 {
                     bar.Tick();
                     Thread.Sleep(50);
-                }
+                }*/
+                
             }
-
+            
             Exit.auto();
 
             /*#############################
              *######## END TESTING ########
              *///##########################
+
             ToLog.Inf("... bigbyte started ...");
             Helper.SetOperatingSystem_inVarHold();
             Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
