@@ -22,7 +22,8 @@
     You can contact me in the following ways:
         EMail: oettinger.carl@web.de, big-programming@web.de
  */
-
+using Spectre.Console;
+using System.ComponentModel;
 
 namespace bigbyte
 {
@@ -30,6 +31,75 @@ namespace bigbyte
     {
         static void Main(string[] args)
         {
+            /*************************
+             ******** TESTING ********
+             *** REMOVE TO PUBLISH ***
+             ************************/
+
+            /*AnsiConsole.Progress()
+                .Columns(new ProgressColumn[]
+                {
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new PercentageColumn(),
+                    new RemainingTimeColumn(),
+                    new SpinnerColumn(),
+                    new TransferSpeedColumn()
+                })
+                .Start(ctx =>
+                {
+                    var task1 = ctx.AddTask("task1");
+                    var task2 = ctx.AddTask("task2");
+                    var task3 = ctx.AddTask("task3");
+
+                    while (!ctx.IsFinished)
+                    {
+                        task1.Increment(10);
+                        Thread.Sleep(100);
+                        task2.Increment(8.5);
+                        task3.Increment(31);
+                        Thread.Sleep(400);
+                        var task4 = ctx.AddTask("added");
+                        Thread.Sleep(150);
+                        task4.Increment(8);
+                    }
+                });*/
+            var totalBytes = 100_000_000; // Gesamtgröße (in Bytes)
+            var downloadedBytes = 0; // Bereits heruntergeladene Bytes
+            var startTime = DateTime.Now;
+
+            AnsiConsole.Progress()
+                .Columns(
+                    new TaskDescriptionColumn(), // Beschreibung der Aufgabe
+                    new ProgressBarColumn(), // Fortschrittsbalken
+                    new PercentageColumn(), // Prozentsatz
+                    new RemainingTimeColumn(), // Verbleibende Zeit
+                    new ElapsedTimeColumn(), // Verstrichene 
+                    new TransferSpeedColumn() // Übertragungsgeschwindigkeit
+                )
+                .Start(ctx =>
+                {
+                    var task = ctx.AddTask("Herunterladen...", maxValue: totalBytes);
+
+                    while (!ctx.IsFinished)
+                    {
+                        // Simuliere den Download
+                        var chunkSize = 1_000_000; // 1 MB pro Schritt
+                        downloadedBytes += chunkSize;
+                        task.Increment(chunkSize);
+
+                        Thread.Sleep(100); // Simulierte Verzögerung
+                    }
+                });
+
+
+
+            Exit.auto();
+
+            /*************************
+             ****** END TESTING ******
+             ************************/
+
             ToLog.Inf("... bigbyte started ...");
             Helper.SetOperatingSystem_inVarHold();
             Helper.Check_ifDataDirectoriesAreAvailable_orCreateThem();
